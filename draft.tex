@@ -34,14 +34,40 @@ centertags]{article} %%
 
 \end{center}
 \end{titlepage}
+
 \topmargin=-10pt
 \setcounter{page}{2}
+
 \newpage
 \hrule
 \tableofcontents
+
 \newpage
-\hrule
-\section{Bridge}
-\subsection{Subsection 1.}
-\subsection{Subsection 2.}
+\include{architecture}
+
+\newpage
+
+Here goes a list\newline % end-of-line marker
+\begin{itemize}
+	\item Here is the first item
+	\item Here is the second one
+\end{itemize}
+
+Here is enumerated list\\ %end-of-line marker too
+\begin{enumerate}
+	\item First item
+	\item Second item
+\end{enumerate}
+
+And here goes a picture:
+
+\begin{figure}[!h]
+\label{arch}
+\centering
+\includegraphics[width=\linewidth]{img/servlet/components_not_that_safe.pdf}
+\caption{Architecture.}
+\end{figure}
+
+You may use \ref{arch} as a reference to a picture.
+
 \end{document}
