@@ -3,6 +3,7 @@ all: .build
 .init: clean
 	cd build && rm -rf *.tex *.bib img/* 
 	cp *.tex build/
+	cp -R tex build/
 	cp -R img build/
 
 .build: .init draft.tex .dispose
