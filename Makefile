@@ -7,6 +7,7 @@ all: .build
 
 .build: .init draft.tex .dispose
 	cd build && pdflatex --file-line-error-style draft.tex
+	cd build && pdflatex --file-line-error-style draft.tex
 
 .dispose: clean
 	
