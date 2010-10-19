@@ -24,76 +24,70 @@ The same rules could be treated in opposite direction --- every change of Git br
 
 This and further chapters consider scenarios with branches only. But every scenario could be applied to tags with the rules above taken into account.
 
-\subsubsection{Subversion Branch Creation}
+\subsubsection{From Subversion to Git}
 
 There is a number of ways to create branch in Subversion.
 
 \begin{enumerate}
 \compactlist
-\item Branch creation by copying, figure \ref{svn_branch_creation}.
+\item Branch creation by copying, figure \ref{branch_creation_svn_to_git}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_svn_to_git.pdf}
 \caption{Subversion branch copying being translated to Git branch creation.}
-\label{svn_branch_creation}
+\label{branch_creation_svn_to_git}
 \end{figure}
 
-Subversion user at revision r3 copied /branches/branch1@r2 to /branches/branch2. For that change Translator creates commit with:
-\begin{itemize}
-	\item Tree Object corresponding to /branches/branch2 subdirectory contents
-	\item Author Ident and Committer Ident corresponding to the author of the revision
-	\item Date of the revision
-	\item Commit message of the revision
-	\item Parent commit \emph{b}
-\end{itemize}
-And finally Translator adds /refs/heads/branch2 reference to the created commit \emph{c}.
-
 % end of item
-\item Addition with merge history. See \ref{svn_branch_creation_from_mergeinfo}.
+\item Branch addition with merge history. See \ref{branch_creation_from_mergeinfo_svn_to_git}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_from_mergeinfo_svn_to_git.pdf}
 \caption{Subversion branch addition being translated to Git branch creation.}
-\label{svn_branch_creation_from_mergeinfo}
+\label{branch_creation_from_mergeinfo_svn_to_git}
 \end{figure}
 
-Subversion user at revision r3 added /branches/branch2 and set its mergehistory as /branches/branch1:r1-2. Translator will process revision r3 the way described at previous case.
+\item Branch addition with no history.
+
+This kind of translation basically consists of:
+\begin{enumerate}
+	\item Creation of new commit object with no parents attached to it.
+	\item Adding a branch reference to this new commit afterwards.
 \end{enumerate}
 
-\subsubsection{Git Branch Creation}
+\end{enumerate}
+
+\subsubsection{From Git to Subversion}
 
 \begin{enumerate}
 \compactlist
-\item Branch reference addition, figure \ref{git_branch_creation}.
+\item Branch creation and committing on new branch, figure \ref{branch_creation_git_to_svn}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_git_to_svn.pdf}
-\caption{Subversion branch copy being translated to Git branch creation.}
-\label{git_branch_creation}
+\caption{Commit on Git branch being translated to Subversion.}
+\label{branch_creation_git_to_svn}
 \end{figure}
 
-Subversion user at revision r3 copied /branches/branch1@r2 to /branches/branch2. For that change Translator creates commit with:
-\begin{itemize}
-	\item Tree Object corresponding to /branches/branch2 subdirectory contents
-	\item Author Ident and Committer Ident corresponding to the author of the revision
-	\item Date of the revision
-	\item Commit message of the revision
-	\item Parent commit \emph{b}
-\end{itemize}
-And finally Translator adds /refs/heads/branch2 reference to the created commit \emph{c}.
-
-% end of item
-\item Addition with merge history. See \ref{svn_branch_creation_from_mergeinfo}.
+\item Branch reference creation with no commit, figure \ref{svn_no_change_branch_creation_git_to_svn}.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=\linewidth]{img/diagrams/branch_creation_from_mergeinfo_svn_to_git.pdf}
-\caption{Subversion branch addition being translated to Git branch creation.}
-\label{svn_branch_creation_from_mergeinfo}
+\includegraphics[width=\linewidth]{img/diagrams/svn_no_change_branch_creation_git_to_svn.pdf}
+\caption{Commit on Git branch being translated to Subversion.}
+\label{svn_no_change_branch_creation_git_to_svn}
 \end{figure}
 
-Subversion user at revision r3 added /branches/branch2 and set its mergehistory as /branches/branch1:r1-2. Translator will process revision r3 the way described at previous case.
+\item Double branch reference creation and committing on new branches, figure \ref{ambiguous_svn_branch_git_to_svn}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\linewidth]{img/diagrams/ambiguous_svn_branch_git_to_svn.pdf}
+\caption{Commit on Git branch being translated to Subversion.}
+\label{ambiguous_svn_branch_git_to_svn}
+\end{figure}
+
 \end{enumerate}

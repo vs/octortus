@@ -15,7 +15,7 @@ This kind of translation depicted at diagram \ref{single_change_svn_to_git}.
 
 Subversion user modified /branches/branch1 at revision r3. For that change Translator
 \begin{enumerate}
-	\item Creates commit \emph{c} with Tree Object corresponding to /branches/branch1@r3 subdirectory contents.
+	\item Creates commit \emph{c} with Tree Object corresponding to /branches/branch1@r3 subdirectory content.
 	\item Commit \emph{c} has Author Ident and Committer Ident corresponding to the author of the revision.
 	\item Commit \emph{c} has the same date as revision r3.
 	\item Commit \emph{c} has the same message as the revision r3.
@@ -33,5 +33,13 @@ This kind of translation depicted at diagram \ref{single_change_git_to_svn}.
 \caption{Git Commit being translated to Subversion Revision.}
 \label{single_change_git_to_svn}
 \end{figure}
+
+Git user created commit \emph{c} at \emph{branch1}. For that change Translator
+\begin{enumerate}
+	\item Creates revision \emph{r3} with /branches/branch1 subdirectory content corresponding to Tree Object of \emph{c} commit.
+	\item Revision r3 \emph{c} has the author corresponding to author ident of commit \emph{c}.
+	\item If the latest revision of Subversion repository before translation had date before commit \emph{c} creation date, this creation date is udsed for revision r3, otherwise the date of committing revision r3 is used.
+	\item Revision r3 has the same message as commit \emph{c}.
+\end{enumerate}
 
 More complicated scenarios will be considered in the future chapters but metadata translation is common for any of them.
