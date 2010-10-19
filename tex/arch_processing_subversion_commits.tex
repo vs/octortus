@@ -1,1 +1,27 @@
 \subsection{Processing Subversion Commits}
+
+Translator plugs into the standard Subversion commit process so, that after Subversion commit operation
+is completed and new revision is visible to Subversion user, Translator guarantees that translated Git commits
+corresponding to this very revision are available to GitHub Git repository users.
+\\\\
+Thus, Translator guarantess atomicity and integrity of the transaction composed of Subversion commit operation
+and Git commit creation and push.
+\\\\
+Subversion handles user's commit request in the following way:
+
+\begin{enumerate}
+\item Commit transaction is constructed from user's description of it. Multiple transactions might be constructed simultaneously.
+\item \textbf{Hook 1}
+\item \textbf{Hook 2} Commit transaction is then "merged" with the latest repository revision. In case there is a conflict (file modified by transaction might be modified by another transaction already), then out-of-date error is reported and commit is aborted. Otherwise transaction is assigned a base revision.
+\item Repository is locked for writing (using file system lock) and in scope of this lock, transaction is converted to the immutable repository revision. In case transaction base revision differs from the actual latest repository revision (which is verified very early), then repository is unlocked and another attempt to merge transaction and reassign base revision to it is performed (go to 2).
+\item \textbf{Hook 3} Repository latest revision (visible to the users) is updated atomically and repository is unlocked.
+\end{enumerate}
+To perform instant translation and push, Translator plugs into \textbf{Hook 1}, \textbf{Hook 2} and \textbf{Hook 3} points of the commit handling process.
+\\\\
+\textbf{Hook 1:} Local Git repository synchronized with its GitHub origin. Local Subversion repository is synchronized with the local Git repository.
+\\\\
+\textbf{Hook 2:} Git Commit objects are created, Git braches and tags modified accordingly to the translation rules.
+\\\\
+\textbf{Hook 3:} Local Git repository changes are pushed to GitHub origin repository.
+\\\\
+This way, unless Subversion commit succeeded, no Git translation and push will take place and unless push have succeeded, new Subversion revision will not become visible.
