@@ -64,8 +64,8 @@ performed as part of Subversion commit operation, which might make Subversion co
 To resolve this potential performance issue, Translator could benefit from having local filesystem access to the GitHub repository. Then Translator may work directly with GitHub repository,
 with no need to use expensive push and fetch operations.
 \begin{figure}[!h]
-\label{translator_components_pic2}
 \includegraphics[width=\linewidth]{img/servlet/components_not_that_safe.pdf}
 \caption{Higher level of interference}
+\label{translator_components_pic2}
 \end{figure}
 Major drawback of that solution is that theoretically, bug in Translator code may damage existing GitHub repository contents.

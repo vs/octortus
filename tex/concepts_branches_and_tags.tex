@@ -33,10 +33,10 @@ There is a number of ways to create branch in Subversion.
 \item Branch creation by copying, figure \ref{svn_branch_creation}.
 
 \begin{figure}[!h]
-\label{svn_branch_creation}
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_svn_to_git.pdf}
 \caption{Subversion branch copying being translated to Git branch creation.}
+\label{svn_branch_creation}
 \end{figure}
 
 Subversion user at revision r3 copied /branches/branch1@r2 to /branches/branch2. For that change Translator creates commit with:
@@ -53,10 +53,10 @@ And finally Translator adds /refs/heads/branch2 reference to the created commit 
 \item Addition with merge history. See \ref{svn_branch_creation_from_mergeinfo}.
 
 \begin{figure}[!h]
-\label{svn_branch_creation_from_mergeinfo}
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_from_mergeinfo_svn_to_git.pdf}
 \caption{Subversion branch addition being translated to Git branch creation.}
+\label{svn_branch_creation_from_mergeinfo}
 \end{figure}
 
 Subversion user at revision r3 added /branches/branch2 and set its mergehistory as /branches/branch1:r1-2. Translator will process revision r3 the way described at previous case.
@@ -69,10 +69,10 @@ Subversion user at revision r3 added /branches/branch2 and set its mergehistory 
 \item Branch reference addition, figure \ref{git_branch_creation}.
 
 \begin{figure}[!h]
-\label{svn_branch_creation}
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_svn_to_git.pdf}
 \caption{Subversion branch copying being translated to Git branch creation.}
+\label{svn_branch_creation}
 \end{figure}
 
 Subversion user at revision r3 copied /branches/branch1@r2 to /branches/branch2. For that change Translator creates commit with:
@@ -89,10 +89,10 @@ And finally Translator adds /refs/heads/branch2 reference to the created commit 
 \item Addition with merge history. See \ref{svn_branch_creation_from_mergeinfo}.
 
 \begin{figure}[!h]
-\label{svn_branch_creation_from_mergeinfo}
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_from_mergeinfo_svn_to_git.pdf}
 \caption{Subversion branch addition being translated to Git branch creation.}
+\label{svn_branch_creation_from_mergeinfo}
 \end{figure}
 
 Subversion user at revision r3 added /branches/branch2 and set its mergehistory as /branches/branch1:r1-2. Translator will process revision r3 the way described at previous case.
