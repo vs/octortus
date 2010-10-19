@@ -65,7 +65,7 @@ This kind of translation basically consists of:
 \compactlist
 \item Branch creation and committing on new branch, figure \ref{branch_creation_git_to_svn}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_git_to_svn.pdf}
 \caption{Commit on Git branch being translated to Subversion.}
@@ -74,19 +74,19 @@ This kind of translation basically consists of:
 
 \item Branch reference creation with no commit, figure \ref{svn_no_change_branch_creation_git_to_svn}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/svn_no_change_branch_creation_git_to_svn.pdf}
-\caption{Commit on Git branch being translated to Subversion.}
+\caption{Added branch reference being translated to Subversion.}
 \label{svn_no_change_branch_creation_git_to_svn}
 \end{figure}
 
 \item Double branch reference creation and committing on new branches, figure \ref{ambiguous_svn_branch_git_to_svn}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/ambiguous_svn_branch_git_to_svn.pdf}
-\caption{Commit on Git branch being translated to Subversion.}
+\caption{Committed change on double referenced branch being translated to Subversion.}
 \label{ambiguous_svn_branch_git_to_svn}
 \end{figure}
 
