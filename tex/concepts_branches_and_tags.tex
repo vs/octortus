@@ -1,1 +1,24 @@
 \subsection{Branches and Tags}
+
+Technically Subversion does not introduce separate concepts for branches and tags. Both branches and tags are versioned directories under repository root. As result Translator performs theirs translation in similar way. There are differences at Git level only:
+\begin{enumerate}
+	\item Addition.
+	\begin{itemize}
+		\item Creation of /branches/\emph{B} directory leads to creation of a new branch reference \emph{B}.
+		\item Creation of /tags/\emph{T} directory leads to addition of corresponding Tag Object with name \emph{T}.
+	\end{itemize}
+	\item Modification.
+	\begin{itemize}
+		\item Change at /branches/\emph{B} directory leads to updating of corresponding branch reference \emph{B}.
+		\item Change at /tags/\emph{T} directory leads to the removal of obsolete Tag Object with name \emph{T} and creation of new Tag Object with the same name for corresponding Commit Object.
+	\end{itemize}
+	\item Deletion.
+	\begin{itemize}
+		\item Removal of /branches/\emph{B} directory leads to removal of corresponding reference \emph{B} at Git repository, when
+		\item Removal of /tags/\emph{T} directory leads to removal of corresponding Tag Object with name \emph{T}.
+	\end{itemize}
+\end{enumerate}
+
+The same rules could be treated in opposite direction --- every change of Git branch or tag leads to corresponding change of Subversion branch or tag.
+
+This and further chapters consider scenarios with branches only. But every scenario could be applied to tags with rules above taken into account.
