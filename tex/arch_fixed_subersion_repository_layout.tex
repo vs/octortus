@@ -1,1 +1,35 @@
 \subsection{Fixed Subversion Repository Layout}
+
+To support sane translation of Git branches and tags concepts into correspoding Subversion concepts, Translator must enforce certain Subversion repository layout and introduce limitations which are not present in the standard Subversion repository. 
+In practice, these limitations will have no or very limited influence on real Subversion use cases.
+\\\\
+\textbf{Layout:}\\ 
+Subversion repository always has the following directories:
+\\\\
+/trunk\\
+/branches\\
+/tags\\\\
+\textbf{Limitations:}
+\begin{enumerate}
+\item no directories or files may be created in the root of repository
+\item /trunk, /branches and /tags directories may not be deleted or copied
+\item /branches/\emph{B} directory may only be created as a copy of /trunk or
+as a copy of another /branches/\emph{A} directory
+\item /tags/\emph{T} directory may only be created as a copy of /trunk or
+as a copy of another /tags/\emph{A} or /branches/\emph{B} directory
+\item no directory except of direct children of /tags or /branches might be a
+copy of /trunk or of /tags/\emph{T} or of /branches/\emph{B} directory
+\item no files might be created in /tags and in /branches directories
+\end{enumerate}
+Above layout and listed limitations corresponds exactly to the Subversion common practice informal standard which
+is used in case when Subversion repository contains a single project. Subversion does not encourage people 
+to keep multiple projects in the same repository, but some users may prefer the following layout:
+\\\\
+/projectX/trunk\\
+/projectX/branches\\
+/projectX/tags\\
+/projectZ/trunk\\
+/projectZ/branches\\
+/projectZ/tags\\\\
+or any other combination of the standard layout components and project or subsystem names. Translator does not support such layouts as they 
+makes sane branches and tags concepts translation more complicated and ambigous.
