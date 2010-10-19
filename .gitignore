@@ -5,3 +5,4 @@
 *.pdf
 *.toc
 *.gz
+!img/*/*.pdf

@@ -24,8 +24,8 @@ centertags]{article} %%
 \begin{center}
 
 % Title
-\textbf{\LARGE Git – Subversion Translation} \\[1.0cm]
-\textbf{\LARGE Specification} \\[3.0cm]
+\textbf{\LARGE Git –- Subversion Translation} \\[2.0cm]
+\textbf{\LARGE Specification Draft} \\[3.0cm]
 
 \textbf{Alexander Kitaev} \\[0.7cm]
 \textbf{Dmitry Pavlenko} \\[0.7cm]
@@ -44,42 +44,26 @@ centertags]{article} %%
 
 \newpage
 \hrule
-\section{Translator Architecture}
-\include{tex/arch_translator_components}
-\include{tex/arch_commits_to_revisions_mapping}
-\include{tex/arch_processing_subversion_commits}
-\include{tex/arch_processing_git_commits}
-\include{tex/arch_fixed_subersion_repository_layout}
-\section{Translated Concepts}
-\include{tex/concepts_branches_and_tags}
-\include{tex/concepts_merge}
-\include{tex/concepts_copies_and_renames}
-\include{tex/concepts_special_properties_and_attributes}
-\include{tex/concepts_git_forks}
-\include{tex/concepts_other}
+\section{Introduction}
+\input{tex/intro}
 
 \newpage
-Here goes a list\newline % end-of-line marker
-\begin{itemize}
-	\item Here is the first item
-	\item Here is the second one
-\end{itemize}
+\hrule
+\section{Translator Architecture}
+\input{tex/arch_translator_components}
+\input{tex/arch_commits_to_revisions_mapping}
+\input{tex/arch_processing_subversion_commits}
+\input{tex/arch_processing_git_commits}
+\input{tex/arch_fixed_subersion_repository_layout}
 
-Here is enumerated list\\ %end-of-line marker too
-\begin{enumerate}
-	\item First item
-	\item Second item
-\end{enumerate}
-
-And here goes a picture:
-
-\begin{figure}[!h]
-\label{arch}
-\centering
-\includegraphics[width=\linewidth]{img/servlet/components_not_that_safe.pdf}
-\caption{Architecture.}
-\end{figure}
-
-You may use \ref{arch} as a reference to a picture.
+\newpage
+\hrule
+\section{Translated Concepts}
+\input{tex/concepts_branches_and_tags}
+\input{tex/concepts_merge}
+\input{tex/concepts_copies_and_renames}
+\input{tex/concepts_special_properties_and_attributes}
+\input{tex/concepts_git_forks}
+\input{tex/concepts_other}
 
 \end{document}
