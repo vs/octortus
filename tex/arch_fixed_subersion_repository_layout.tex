@@ -12,9 +12,9 @@ Subversion repository always has the following directories:
 \textbf{Limitations:}
 \begin{enumerate}
 \item no directories or files may be created in the root of repository
-\item /trunk, /branches and /tags directories may not be deleted or copied
+\item /trunk, /branches and /tags directories may not be deleted or copied% S.: trunk may be copied %
 \item /branches/\emph{B} directory may only be created as a copy of /trunk or
-as a copy of another /branches/\emph{A} directory
+as a copy of another /branches/\emph{A} directory% S.: why not from tag/T directory? %
 \item /tags/\emph{T} directory may only be created as a copy of /trunk or
 as a copy of another /tags/\emph{A} or /branches/\emph{B} directory
 \item no directory except of direct children of /tags or /branches might be a
@@ -32,4 +32,4 @@ to keep multiple projects in the same repository, but some users may prefer the 
 /projectZ/branches\\
 /projectZ/tags\\\\
 or any other combination of the standard layout components and project or subsystem names. Translator does not support such layouts as they 
-makes sane branches and tags concepts translation more complicated and ambigous.
+makes sane branches and tags concepts translation more complicated and ambiguous.
