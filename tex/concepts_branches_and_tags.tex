@@ -22,7 +22,7 @@ Technically Subversion does not introduce separate concepts for branches and tag
 
 The same rules could be treated in opposite direction --- every change of Git branch or tag leads to corresponding change of Subversion branch or tag.
 
-This and further chapters consider scenarios with branches only. But every scenario could be applied to tags with the rules above taken into account.
+This and further chapters consider scenarios with branches only. Every scenario could be applied to tags with the rules above taken into account.
 
 \subsubsection{Creation}
 
@@ -58,7 +58,7 @@ In opposite direction translation behaves as depicted at diagram \ref{branch_cre
 \label{branch_creation_git_to_svn}
 \end{figure}
 
-Branches also could be created with no history. This kind of translation depicted at \ref{branch_creation_no_history_svn_to_git} and \ref{branch_creation_no_history_git_to_svn}.
+Branches also could be created with no history. This kind of Subversion to Git translation depicted at diagram \ref{branch_creation_no_history_svn_to_git} and corresponding Git to Subversion translation depicted at diagram \ref{branch_creation_no_history_git_to_svn}.
 
 \begin{figure}[!h]
 \centering
@@ -73,9 +73,11 @@ Branches also could be created with no history. This kind of translation depicte
 \renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_no_history_git_to_svn.pdf}
 \caption{Subversion branch addition being translated to Git branch creation.}
-\label{branch_creation_no_history_svn_to_git}
+\label{branch_creation_no_history_git_to_svn}
 \end{figure}
 
 \subsubsection{Modification}
 
 \subsubsection{Deletion}
+
+\subsubsection{Replacement}
