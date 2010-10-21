@@ -11,7 +11,7 @@ Subversion handles user's commit request in the following way:
 
 \begin{enumerate}
 \item Commit transaction is constructed from user's description of it. Multiple transactions might be constructed simultaneously.
-\item \textbf{Hook 1} % S.: Will be added soon?%
+\item \textbf{Hook 1} % S.: Will be added soon? - No, I've divided first hook into two ones for clarity - first part syncs, second creates commits.%
 \item \textbf{Hook 2} Commit transaction is then "merged" with the latest repository revision. In case there is a conflict (file modified by transaction might be modified by another transaction already), then out-of-date error is reported and commit is aborted. Otherwise transaction is assigned a base revision.
 \item Repository is locked for writing (using file system lock) and in scope of this lock, transaction is converted to the immutable repository revision. In case transaction base revision differs from the actual latest repository revision (which is verified very early), then repository is unlocked and another attempt to merge transaction and reassign base revision to it is performed (go to 2).
 \item \textbf{Hook 3} Repository latest revision (visible to the users) is updated atomically and repository is unlocked.
