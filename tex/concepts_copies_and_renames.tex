@@ -1,1 +1,17 @@
 \subsection{Copies and Renames}
+This section decribes translation of files and directories copies and renames, \emph{other than} copies and renames of 
+branches (/branches/\emph{B}) and tags (/tags/\emph{T}). For that sort of copies and renames refer to the "Branches and Tags" 
+section of this specification.\\\\
+Rename translation does not differ from translation of the copy, because both Git and Subversion
+express renames as a composition of copy and deletion. 
+
+\subsubsection{Copies in Subversion to Git}
+No special translation is performed for a file or directory copied or renamed in Subversion revision. Copy of the single file is translated 
+to creation of a new file in the corresponding Git commit. Copy of a directory is translated to creation of a new directory with all its children
+in the corresponding Git commit.
+
+\subsubsection{Copies in Git to Subversion}
+Whenever it is revealed that new file in Git commit is a result of copy or rename, this new file creation is translated to a file copy in the 
+corresponding Subversion revision.\\\\ 
+When amount of copied files in a new directory exceeds certain treshold (percentage of the amount of files in the original directory), then new directory
+creation is translated into a directory copy with appropriate directory content adjustment in the correspoding Subversion revision.
