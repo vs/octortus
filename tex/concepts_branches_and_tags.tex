@@ -24,9 +24,11 @@ The same rules could be treated in opposite direction --- every change of Git br
 
 This and further chapters consider scenarios with branches only. Every scenario could be applied to tags with the rules above taken into account.
 
+Basically Translator tracks all the references located at Git repository and synchronizes every such reference with certain Subversion branch. The exact way of this synchronization described further.
+
 \subsubsection{Creation}
 
-There is a couple of ways to create branch in Subversion by keeping history of another branch:
+There is a couple of ways to create branch in Subversion keeping history of another branch (or the same branch from certain revision):
 
 \begin{enumerate}
 \compactlist
@@ -35,7 +37,7 @@ There is a couple of ways to create branch in Subversion by keeping history of a
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_svn_to_git.pdf}
-\caption{Subversion branch copying being translated to Git branch creation.}
+\caption{Subversion branch copy being translated to Git branch creation.}
 \label{branch_creation_svn_to_git}
 \end{figure}
 
@@ -44,17 +46,17 @@ There is a couple of ways to create branch in Subversion by keeping history of a
 \centering
 \renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_from_mergeinfo_svn_to_git.pdf}
-\caption{Subversion branch addition being translated to Git branch creation.}
+\caption{Subversion branch addition with merge history being translated to Git branch creation.}
 \label{branch_creation_from_mergeinfo_svn_to_git}
 \end{figure}
 \end{enumerate}
 
-In opposite direction translation behaves as depicted at diagram \ref{branch_creation_git_to_svn}.
+Git to Subversion translation behaves as depicted at diagram \ref{branch_creation_git_to_svn}.
 \begin{figure}[!h]
 \centering
 \renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_git_to_svn.pdf}
-\caption{Subversion branch addition being translated to Git branch creation.}
+\caption{Git branch addition being translated to Subversion branch copy.}
 \label{branch_creation_git_to_svn}
 \end{figure}
 
@@ -64,7 +66,7 @@ Branches also could be created with no history. This kind of Subversion to Git t
 \centering
 \renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_no_history_svn_to_git.pdf}
-\caption{Subversion branch addition being translated to Git branch creation.}
+\caption{Subversion branch addition with no history being translated to creation of Git branch referenced to commit with no parents.}
 \label{branch_creation_no_history_svn_to_git}
 \end{figure}
 
@@ -72,11 +74,45 @@ Branches also could be created with no history. This kind of Subversion to Git t
 \centering
 \renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/branch_creation_no_history_git_to_svn.pdf}
-\caption{Subversion branch addition being translated to Git branch creation.}
+\caption{Addition of Git branch referenced to commit with no parents being translated to Subversion branch creation.}
 \label{branch_creation_no_history_git_to_svn}
 \end{figure}
 
+Translator always tracks all Git branch references, so addition of such a reference with no commits on the branch is always translated as creation of Subversion branch with no changes. This case depicted at diagram \ref{svn_no_change_branch_creation_git_to_svn}.
+
+\begin{figure}[!h]
+\centering
+\renewcommand{\figurename}{Diagram}
+\includegraphics[width=\linewidth]{img/diagrams/svn_no_change_branch_creation_git_to_svn.pdf}
+\caption{Addition of second reference to Git commit being translated to creation of Subversion branch with no changes.}
+\label{svn_no_change_branch_creation_git_to_svn}
+\end{figure}
+
+\clearpage
 \subsubsection{Modification}
+
+The most typical scenarios of branch modification depicted at diagrams \ref{single_change_svn_to_git} and \ref{single_change_git_to_svn}. There are also the following use cases:
+
+\begin{enumerate}
+
+\item Double referenced Git commit modified by Git user. See diagram \ref{ambiguous_svn_branch_git_to_svn}.
+\begin{figure}[!h]
+\centering
+\renewcommand{\figurename}{Diagram}
+\includegraphics[width=\linewidth]{img/diagrams/ambiguous_svn_branch_git_to_svn.pdf}
+\caption{Commit referenced by two branches being translated to Subversion two revisions: modification revision r3 and second branch creation revision r4.}
+\label{ambiguous_svn_branch_git_to_svn}.
+\end{figure}
+
+\item Subversion user modified two branches at single revision. See diagram \ref{double_branch_change_svn_to_git}.
+\begin{figure}[!h]
+\centering
+\renewcommand{\figurename}{Diagram}
+\includegraphics[width=\linewidth]{img/diagrams/double_branch_change_svn_to_git.pdf}
+\caption{Revision modified two branches at once being translated to creation of two commits and updating corresponding branch references.}
+\label{double_branch_change_svn_to_git}.
+\end{figure}
+\end{enumerate}
 
 \subsubsection{Deletion}
 
