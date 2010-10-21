@@ -119,7 +119,7 @@ The most typical scenarios of branch modification depicted at diagrams \ref{sing
 
 \begin{enumerate}
 \compactlist
-\item Deletion of Subversion branch always translated as deletion of corresponding Git branch as depicted at diagram \ref{branch_deletion_svn_to_git}. Single revision can remove an arbitrary number of branches, every corresponding Git branch is removed by Translator for that case.
+\item Deletion of Subversion branch is always translated as deletion of corresponding Git branch as depicted at diagram \ref{branch_deletion_svn_to_git}. Single revision can remove an arbitrary number of branches, every corresponding Git branch is removed by Translator for that case.
 \begin{figure}[!h]
 \centering
 \renewcommand{\figurename}{Diagram}
@@ -134,8 +134,26 @@ The most typical scenarios of branch modification depicted at diagrams \ref{sing
 \renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/branch_deletion_git_to_svn.pdf}
 \caption{Deletion of Git branch being translated to Subversion branch removal.}
-\label{branch_deletion_svn_to_git}
+\label{branch_deletion_git_to_svn}
 \end{figure}
 \end{enumerate}
 
 \subsubsection{Replacement}
+
+Subversion user is able to replace some branch by another, translation of that case is performed as shown on diagram \ref{branch_replacement_svn_to_git}.
+\begin{figure}[!h]
+\centering
+\renewcommand{\figurename}{Diagram}
+\includegraphics[width=\linewidth]{img/diagrams/branch_replacement_svn_to_git.pdf}
+\caption{Replacement of Subversion branch being translated to replacement of Git branch.}
+\label{branch_replacement_svn_to_git}
+\end{figure}
+
+Git user is able to reset any branch to any commit, that kind of changes is translated as shown at diagram \ref{branch_replacement_git_to_svn}.
+\begin{figure}[!h]
+\centering
+\renewcommand{\figurename}{Diagram}
+\includegraphics[width=\linewidth]{img/diagrams/branch_replacement_git_to_svn.pdf}
+\caption{Replacement of Subversion branch being translated to replacement of Git branch.}
+\label{branch_replacement_git_to_svn}
+\end{figure}
