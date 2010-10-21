@@ -8,6 +8,7 @@ This kind of translation depicted at diagram \ref{single_change_svn_to_git}.
 
 \begin{figure}[!h]
 \centering
+\renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/single_change_svn_to_git.pdf}
 \caption{Subversion revision being translated to Git commit creation.}
 \label{single_change_svn_to_git}
@@ -29,6 +30,7 @@ This kind of translation depicted at diagram \ref{single_change_git_to_svn}.
 
 \begin{figure}[!h]
 \centering
+\renewcommand{\figurename}{Diagram}
 \includegraphics[width=\linewidth]{img/diagrams/single_change_git_to_svn.pdf}
 \caption{Git Commit being translated to Subversion Revision.}
 \label{single_change_git_to_svn}
@@ -36,7 +38,7 @@ This kind of translation depicted at diagram \ref{single_change_git_to_svn}.
 
 Git user created commit \emph{c} at \emph{branch1}. For that change Translator
 \begin{enumerate}
-	\item Creates revision \emph{r3} with /branches/branch1 subdirectory content corresponding to Tree Object of \emph{c} commit.
+	\item Creates revision \emph{r3}, /branches/branch1 subdirectory content corresponds to Tree Object of \emph{c} commit.
 	\item Revision r3 \emph{c} has the author corresponding to author ident of commit \emph{c}.
 	\item If the latest revision of Subversion repository before translation had date before commit \emph{c} creation date, this creation date is udsed for revision r3, otherwise the date of committing revision r3 is used.
 	\item Revision r3 has the same message as commit \emph{c}.
