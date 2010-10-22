@@ -3,7 +3,7 @@ This section decribes translation of files and directories copies and renames, \
 branches (/branches/\emph{B}) and tags (/tags/\emph{T}). For that sort of copies and renames refer to the "Branches and Tags" 
 section of this specification.\\\\
 Rename translation does not differ from translation of the copy, because both Git and Subversion
-express renames as a composition of copy and deletion. 
+express renames as a composition of copy and deletion.% I'd say it's a huge gap between copy detection and rename detection in Git, since it's a heavy task for Git to find copies, when it works just fine with rename detection. From this point I suggest (and SVNGitKit currently behaves this way) that we detect renames only at Git to SVN translation, at least for the first release.
 
 \subsubsection{Copies in Subversion to Git}
 No special translation is performed for a file or directory copied or renamed in Subversion revision. Copy of the single file is translated 
