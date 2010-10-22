@@ -37,11 +37,15 @@ It is natural to reverse this idea for Subversion to Git merge history translati
 
 \subsubsection{Cherry Pick}
 
+Subversion tracks cherry-pick merges as well as merges of the whole branch history. Git doesn't support this kind of merges. Hence cherry-pick merge performed by Subversion user is translated as a new ordinary commit with corresponding changes. This case depicted at diagram \ref{no_merge_commit_on_cherry_pick_svn_to_git}.
+
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/no_merge_commit_on_cherry_pick_svn_to_git.pdf}%
-\captionof{figure}{Merge of unnamed Git branch being translated to a sequence of Subversion revisions.}
+\captionof{figure}{Cherry-pick merge being translated to ordinary commit.}
 \label{no_merge_commit_on_cherry_pick_svn_to_git}%
 \end{center}
+
+Though a sequence of cherry-pick merges may lead the history of certain branch to the state when it includes the history of another branch as merge history. This scenario is depicted at diagrams \ref{merge_commit_on_double_cherry_pick_svn_to_git} and \ref{merge_commit_on_double_cherry_pick_branch_no_parent_svn_to_git}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/merge_commit_on_double_cherry_pick_svn_to_git.pdf}%
