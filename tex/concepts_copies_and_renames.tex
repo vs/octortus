@@ -2,8 +2,6 @@
 This section describes translation of files and directories copies and renames, \emph{other than} copies and renames of 
 branches (/branches/\emph{B}) and tags (/tags/\emph{T}). For that sort of copies and renames refer to the "Branches and Tags" 
 section of this specification.\\\\
-Rename translation does not differ from translation of the copy, because both Git and Subversion
-express renames as a composition of copy and deletion.% I'd say it's a huge gap between copy detection and rename detection in Git, since it's a heavy task for Git to find copies, when it works just fine with rename detection. From this point I suggest (and SVNGitKit currently behaves this way) that we detect renames only at Git to SVN translation, at least for the first release.
 
 \subsubsection{Copies in Subversion to Git}
 No special translation is performed for a file or directory copied or renamed in Subversion revision. Copy of the single file is translated 
@@ -11,7 +9,11 @@ to creation of a new file in the corresponding Git commit. Copy of a directory i
 in the corresponding Git commit.
 
 \subsubsection{Copies in Git to Subversion}
-Whenever it is revealed that new file in Git commit is a result of copy or rename, this new file creation is translated to a file copy in the 
+Git provides means to detect rename of a file in a Git commit, but does not support copy detection, which could be 
+a very expensive operation. For that reason, only file renames are treated in a special way by the Translator and
+no attempt is made to detect file copies. Translator uses simple metric to detect directory rename.\\\\
+Whenever it is revealed that new file in Git commit is a result of rename, this new file creation is translated to a file copy and deletion in the 
 corresponding Subversion revision.\\\\ 
-When amount of copied files in a new directory exceeds certain threshold (percentage of the amount of files in the original directory), then new directory
-creation is translated into a directory copy with appropriate directory content adjustment in the corresponding Subversion revision.
+Directory is considered to be renamed in Git commit, when original directory no longer exists and newly added directory contains
+files detected as being moved from the original directory. When detected, directory rename is translated into a directory copy
+and deletion with appropriate changes to the new directory contents.
