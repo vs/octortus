@@ -1,4 +1,5 @@
 \subsection{Translator Components}
+\renewcommand{\figurename}{Figure}
 
 Translator runs as a separate component independent on existing GitHub infrastructure. Translator is responsible for:
 \begin{itemize}
@@ -8,12 +9,11 @@ Translator runs as a separate component independent on existing GitHub infrastru
   \item Pushing translated Git commits to GitHub Git repository
 \end{itemize}
 Translator components are depicted on the diagram \ref{translator_components_pic}:
-\begin{figure}[!h]
-\label{translator_components_pic}
-\centering
-\includegraphics[width=\linewidth]{img/servlet/components_keep_github_safe.pdf}
-\caption{Translator Components}
-\end{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{img/servlet/components_keep_github_safe.pdf}%
+\captionof{figure}{Translator Components.}
+\label{translator_components_pic}%
+\end{center}
 
 Translator major features from the architecture perspective are \emph{maximum level of reuse} of the standard existing components, and \emph{minimum interference} with the existing GitHub infrastructure. 
 Let's take a look at how these features are implemented. This chapter provides an overview of Translator components and further chapters provides more details on how each particular operation is carried on.
@@ -31,6 +31,7 @@ Processing some of the write requests includes calls to \emph{hooks} which insta
 \subsubsection{Git to Subversion Translator}
 To make any sense, local Subversion repository must be kept up to date with its GitHub counterpart, i.e. it have to include all the changes committed into GitHub repository by Git users. Synchronization of the local Subversion repository with GitHub Git repository is performed in two steps:
 \begin{enumerate}
+\compactlist
 \item Changes in GitHub Git repository are pulled to the local Git repository
 \item Git commits from local Git repository are imported into the local Subversion repository
 \end{enumerate} 
@@ -63,9 +64,10 @@ performed as part of Subversion commit operation, which might make Subversion co
 \\\\
 To resolve this potential performance issue, Translator could benefit from having local filesystem access to the GitHub repository. Then Translator may work directly with GitHub repository,
 with no need to use expensive push and fetch operations.
-\begin{figure}[!h]
-\includegraphics[width=\linewidth]{img/servlet/components_not_that_safe.pdf}
-\caption{Higher level of interference}
-\label{translator_components_pic2}
-\end{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{img/servlet/components_not_that_safe.pdf}%
+\captionof{figure}{Higher level of interference.}
+\label{translator_components_pic2}%
+\end{center}
+
 Major drawback of that solution is that theoretically, bug in Translator code may damage existing GitHub repository contents.

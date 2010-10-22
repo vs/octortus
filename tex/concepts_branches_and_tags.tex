@@ -1,4 +1,4 @@
-	\subsection{Branches and Tags}
+\subsection{Branches and Tags}
 \renewcommand{\figurename}{Diagram}
 
 Technically Subversion does not introduce separate concepts for branches and tags. Both branches and tags are versioned directories under repository root. As result Translator performs theirs translation in similar way. There are differences at Git level only:
@@ -22,31 +22,28 @@ Technically Subversion does not introduce separate concepts for branches and tag
 \end{enumerate}
 
 The same rules could be treated in opposite direction --- every change of Git branch or tag leads to corresponding change of Subversion branch or tag.
-
+\\\\
 This and further chapters consider scenarios with branches only. Every scenario could be applied to tags with the rules above taken into account.
-
+\\\\
 Basically Translator tracks all the references located at Git repository and synchronizes every such reference with certain Subversion branch. The exact way of this synchronization described further.
 
 \subsubsection{Creation}
 
 There is a couple of ways to create branch in Subversion keeping history of another branch (or the same branch from certain revision):
-
-\begin{enumerate}
-\compactlist
-\item Branch creation by copying, diagram \ref{branch_creation_svn_to_git}.
+\\\\
+1. Branch creation by copying, see diagram \ref{branch_creation_svn_to_git}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_creation_svn_to_git.pdf}%
 \captionof{figure}{Subversion branch copy being translated to Git branch creation.}
 \label{branch_creation_svn_to_git}%
 \end{center}
 
-\item Branch creation with merge history, diagram \ref{branch_creation_from_mergeinfo_svn_to_git}.
+2. Branch creation with merge history, see diagram \ref{branch_creation_from_mergeinfo_svn_to_git}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_creation_from_mergeinfo_svn_to_git.pdf}%
 \captionof{figure}{Subversion branch addition with merge history being translated to Git branch creation.}
 \label{branch_creation_from_mergeinfo_svn_to_git}%
 \end{center}
-\end{enumerate}
 
 Git to Subversion translation behaves as depicted at diagram \ref{branch_creation_git_to_svn}.
 \begin{center}
@@ -79,45 +76,36 @@ Translator always tracks all Git branch references, so addition of such a refere
 \subsubsection{Modification}
 
 The most typical scenarios of branch modification depicted at diagrams \ref{single_change_svn_to_git} and \ref{single_change_git_to_svn}. There are also the following use cases:
-
-\begin{enumerate}
-\compactlist
-
-\item Git user created commit and set two references to it. See diagram \ref{ambiguous_svn_branch_git_to_svn}.
+\\\\
+1. Git user created commit and set two references to it. See diagram \ref{ambiguous_svn_branch_git_to_svn}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/ambiguous_svn_branch_git_to_svn.pdf}%
 \captionof{figure}{Commit referenced by two branches being translated to Subversion two revisions: modification revision r3 and second branch creation revision r4.}
 \label{ambiguous_svn_branch_git_to_svn}%
 \end{center}
 
-\item Subversion user modified two branches at a single revision. See diagram \ref{double_branch_change_svn_to_git}.
+2. Subversion user modified two branches at a single revision. See diagram \ref{double_branch_change_svn_to_git}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/double_branch_change_svn_to_git.pdf}%
 \captionof{figure}{Revision modified two branches at once being translated to creation of two commits and updating corresponding branch references.}
 \label{double_branch_change_svn_to_git}%
 \end{center}
-\end{enumerate}
 
 \subsubsection{Deletion}
 
-\begin{enumerate}
-\compactlist
-
-\item Deletion of Subversion branch is always translated as deletion of corresponding Git branch as depicted at diagram \ref{branch_deletion_svn_to_git}. Single revision can remove an arbitrary number of branches, every corresponding Git branch is removed by Translator for that case.
+1. Deletion of Subversion branch is always translated as deletion of corresponding Git branch as depicted at diagram \ref{branch_deletion_svn_to_git}. Single revision can remove an arbitrary number of branches, every corresponding Git branch is removed by Translator for that case.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_deletion_svn_to_git.pdf}%
 \captionof{figure}{Deletion of Subversion branch being translated to Git branch removal.}
 \label{branch_deletion_svn_to_git}%
 \end{center}
 
-\item And vice versa deletion of Git branch leads to deletion of corresponding branch at Subversion repository, see diagram \ref{branch_deletion_git_to_svn}. Multiple Git branches could be removed at once, as result Translator creates a single revision which removes every corresponding Subversion branch.
+2. And vice versa deletion of Git branch leads to deletion of corresponding branch at Subversion repository, see diagram \ref{branch_deletion_git_to_svn}. Multiple Git branches could be removed at once, as result Translator creates a single revision which removes every corresponding Subversion branch.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_deletion_git_to_svn.pdf}%
 \captionof{figure}{Deletion of Git branch being translated to Subversion branch removal.}
 \label{branch_deletion_git_to_svn}%
 \end{center}
-
-\end{enumerate}
 
 \subsubsection{Replacement}
 
