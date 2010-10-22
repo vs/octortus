@@ -5,7 +5,7 @@ Subversion supports per-directory and per-file merge tracking. The implementatio
 
 \subsubsection{Merge History Basics}
 
-Subversion keeps the history of merges performed on certain branch. It is represented as svn:mergeinfo property set on branch root directory.
+Subversion keeps the history of merges performed on certain branch. It is represented as svn:mergeinfo property set on branch root directory. When Git user performs merge from branch2 to branch1, all commits of branch2 becomes the history of branch1. From Subversion perspective that means that branch1 got branch2 as merge history, i.e. svn:mergeinfo property should include revisions mapped to merged commits. This idea illustrated on diagrams \ref{simple_merge_git_to_svn} and \ref{simple_merge_branch_no_parent_git_to_svn}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/simple_merge_git_to_svn.pdf}%
@@ -13,11 +13,15 @@ Subversion keeps the history of merges performed on certain branch. It is repres
 \label{simple_merge_git_to_svn}%
 \end{center}
 
+The difference between these scenarios is that merged branch2 branch may have common commits with branch1 or no common commits at all.
+
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/simple_merge_branch_no_parent_git_to_svn.pdf}%
 \captionof{figure}{Git merge commit being translated to the change of svn:mergeinfo property.}
 \label{simple_merge_branch_no_parent_git_to_svn}%
 \end{center}
+
+It is natural to reverse this idea for Subversion to Git merge history translation. If revision r3 modified svn:mergeinfo property of branch branch1 that merge history of branch1 includes whole history of branch2, then merge commit should be created for that case. Diagrams \ref{simple_merge_svn_to_git} and \ref{simple_merge_branch_no_parent_svn_to_git} illustrate this approach.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/simple_merge_svn_to_git.pdf}%
