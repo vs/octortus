@@ -112,11 +112,17 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 
 \subsubsection{Nested Merge}
 
+In this section we consider scenarios when revision or commit includes the merge history of another merges.
+
+The first use case depicted at diagram \ref{nested_merge_full_mergeinfo_git_to_svn}. Commit \emph{i} is the merge commit of branches branch3 and branch1. But branch1 has a commit \emph{f} which is commit merged branch2 into branch1. For that case at corresponding revision r9 we add svn:mergeinfo property to branch3 which includes the merge history of all commits being merged at commit \emph{i}.
+
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_full_mergeinfo_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{nested_merge_full_mergeinfo_git_to_svn}%
 \end{center}
+
+The mirror of this use case is depicted at diagram \ref{nested_merge_full_mergeinfo_svn_to_git}. Subversion user merged all the revision which represent the whole history of Git commits being merged at commit \emph{i}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_full_mergeinfo_svn_to_git.pdf}%
@@ -124,11 +130,15 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 \label{nested_merge_full_mergeinfo_svn_to_git}%
 \end{center}
 
+Slightly modified scenario is depicted at diagram \ref{nested_merge_partly_mergeinfo_svn_to_git}. Subversion user didn't include /branches/branch2@r5 into merge history explicitly. But this change already included via revision /branches/branch1@r6, thus commit \emph{e} is included into merge history of revision r9 implicitly. As result Translator is able to create commit \emph{i} corresponding to revision r9 and set two parents to it.
+
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_partly_mergeinfo_svn_to_git.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{nested_merge_partly_mergeinfo_svn_to_git}%
 \end{center}
+
+During Git to Subversion translation of merge commits Translator adds to svn:mergeinfo property all the revisions corresponding to commits appended to the history of branch by the merge. Another example of this translation introduced at diagram \ref{merge_sequence_git_to_svn}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/merge_sequence_git_to_svn.pdf}%
@@ -136,11 +146,15 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 \label{merge_sequence_git_to_svn}%
 \end{center}
 
+The same holds in opposite direction: when Subversion user merged revisions corresponding to commits which appended to the branch close the history of the branch, Translator creates merge commit which represents this change. This scenario is depicted at diagram \ref{merge_sequence_svn_to_git}.
+
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/merge_sequence_svn_to_git.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{merge_sequence_svn_to_git}%
 \end{center}
+
+Merged revisions may not include the whole history of certain branch. It is common case when Subversion user performed cherry-pick. As shown before Translator creates common commit for this case with single parent. This scenario is depicted at diagram \ref{no_merge_commit_cherry_pick_sequence_svn_to_git}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/no_merge_commit_cherry_pick_sequence_svn_to_git.pdf}%
@@ -149,6 +163,8 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 \end{center}
 
 \subsubsection{Octopus Merge}
+
+Both Subversion and Git support \emph{octopus merge}, when an arbitrary number of branches being merged into the certain branch at single revision or commit. Translator supports this kind of history change as depicted at diagrams \ref{octopus_merge_git_to_svn} and \ref{octopus_merge_svn_to_git}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/octopus_merge_git_to_svn.pdf}%
