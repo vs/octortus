@@ -1,43 +1,81 @@
 \subsection{Revisions and Commits}
 \renewcommand{\figurename}{Diagram}
+Every Subversion revision and every Git commit consists of:
+\begin{itemize}
+\item Metadata, which includes author, message, date and reference to the previous revision or to the parent commit.
+\item Contents, which might be described explicitly or as a set of modifications applied to the previous contents state.
+\end{itemize}
+Following sections outlines general translation rules used to translated Subversion revision to Git commits and Git commit
+to Subversion revision. This chater describes general translation rules for revsions and commits, while further chapters provides all the 
+necessary details for processing of the special cases.
+\subsubsection{Translating Subversion Revision to Git Commits}
+Every Subversion revision is translated to one or more Git commits and,
+when required by the translation rules, to the creation or deletion of Git reference objects (Git branches and tags).
+\\\\
+Subversion revision translation is performed in multiple stages.
+First, paths affected by Subversion revision are grouped by the branch or tag these paths belong to. 
+Consider the following modifications made in a single Subversion revision:
+\\\\
+M \textbf{/trunk}/file.txt\\
+M \textbf{/branhces/branch1}/file2.txt\\
+D \textbf{/branches/branch1}/file3.txt\\
+A \textbf{/tags/tag1} copied from \textbf{/trunk} at r3\\
 
-Both Revision in Subversion and Commit in Git are atomic changes fixed at certain moment in time by certain person with certain message. The translation of this metadata described below.
-
-\subsubsection{From Revision to Commit}
-
-This kind of translation depicted at diagram \ref{single_change_svn_to_git}.
+Affected paths will be grouped by affected branches into these three groups:
+\begin{enumerate}
+\item \textbf{/trunk}:\\
+M file.txt
+\item \textbf{/branhces/branch1}:\\
+M file2.txt\\
+D file3.txt
+\item \textbf{/tags/tag1}:\\
+  copied from \textbf{/trunk} at r3
+\end{enumerate}
+Then, each group of modifications is translated either to the Git commit or to
+the Git reference object deletion or creation.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/single_change_svn_to_git.pdf}%
 \captionof{figure}{Subversion revision being translated to Git commit.}
 \label{single_change_svn_to_git}%
 \end{center}
-
-Subversion user modified /branches/branch1 at revision r3. For that change Translator
+To translate regular modification of multiple paths within specific branch (/branches/branch1) at certain revision (r3), 
+Translator goes through the following steps: 
 \begin{enumerate}
 	\compactlist
 	\item Creates commit \emph{c} with Tree Object corresponding to /branches/branch1@r3 subdirectory content.
-	\item Commit \emph{c} has Author Ident and Committer Ident corresponding to the author of the revision.
-	\item Commit \emph{c} has the same date as revision r3.
-	\item Commit \emph{c} has the same message as the revision r3.
-	\item Commit \emph{c} has Parent Commit \emph{b} which corresponds to revision r2, i.e. previous modification of branch1.
+	\item Commit \emph{c} has Author Ident and Committer Ident set to the author of the revision 3.
+	\item Commit \emph{c} has the date set to that of the revision 3.
+	\item Commit \emph{c} has the message set to that of the revision 3.
+	\item Commit \emph{c} has Parent Commit set to commit \emph{b} which corresponds to revision 2, i.e. previous modification of branch1.
 	\item And finally Translator updates reference /refs/heads/branch2 to the created commit \emph{c}.
 \end{enumerate}
 
-\subsubsection{From Commit to Revision}
-This kind of translation depicted at diagram \ref{single_change_git_to_svn}.
+Some modifications, in particular those affecting branches and tags directories in Subversion repository, may
+result in the reference objects being created, deleted or modified in Git repository. Refer to the "Branches and Tags" 
+chapter for the corresponding translation rules.
+
+\subsubsection{Translating Git Commit to Subversion Revision}
+Every Git commit is translated to a single Subversion revision. Subversion revision might also be an outcome of 
+the Git reference objects (branches and tags) translation. There is always a Subversion revision
+which corresponds to the Git commit, but not every Subversion revision created by the Translator has 
+corresponding Git commit.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/single_change_git_to_svn.pdf}%
 \captionof{figure}{Git commit being translated to Subversion revision.}
 \label{single_change_git_to_svn}%
 \end{center}
 
-Git user created commit \emph{c} at \emph{branch1}. For that change Translator
+To translate regular Git commit (\emph{c}) on a particular branch (\emph{branch1}), Translator does 
+the following:
 \begin{enumerate}
 	\compactlist
-	\item Creates revision \emph{r3}, /branches/branch1 subdirectory content corresponds to Tree Object of \emph{c} commit.
-	\item Revision r3 \emph{c} has the author corresponding to author ident of commit \emph{c}.
-	\item If the latest revision of Subversion repository before translation had date before commit \emph{c} creation date, this creation date is used for revision r3, otherwise the date of committing revision r3 is used.
-	\item Revision r3 has the same message as commit \emph{c}.
+	\item Creates \emph{revision 3} in which /branches/branch1 directory content corresponds to Tree Object of the Git \emph{c} commit.
+	\item Revision 3 \emph{c} has the author set corresponding to the author ident of the Git commit \emph{c}.
+	\item If the latest revision of Subversion repository before translation had date before Git commit \emph{c} creation date, this creation date is used for revision 3, otherwise the date of committing revision 3 is used.
+	\item Revision 3 has commit message set to the message of the Git commit \emph{c}.
 \end{enumerate}
 
-More complicated scenarios will be considered in the future chapters but metadata translation is common for any of them.
+Some of the translation scenarios includes setting of additional properties on files and directories 
+in Subversion repository, depending on the specific changes in the original Git commit contents and 
+on the particular ancestors set of the original Git commit. These aspects of contents translation are considered in the further chapters of
+this speicification. Metadata translation rules are common for all translation scenarios.
