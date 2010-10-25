@@ -3,7 +3,7 @@
 
 Subversion supports per-directory and per-file merge tracking. The implementation of per-branch merges built on top of per-directory merges. Git tracks per-branch merges only. Hence Translator is able to translate branch-level merges only. In this section we consider common merge scenarios and describe the behavior of Translator for every of them.
 
-\subsubsection{Merge History Basics}
+\subsubsection{Merge History}
 
 Subversion keeps the history of merges performed on certain branch. It is represented as svn:mergeinfo property set on branch root directory. When Git user performs merge from branch2 to branch1, all commits of branch2 becomes the history of branch1. From Subversion perspective that means that branch1 got branch2 as merge history, i.e. svn:mergeinfo property should include revisions mapped to merged commits. This idea illustrated on diagrams \ref{simple_merge_git_to_svn} and \ref{simple_merge_branch_no_parent_git_to_svn}.
 
@@ -113,18 +113,6 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 \subsubsection{Nested Merge}
 
 \begin{center}
-\includegraphics[width=\textwidth]{img/diagrams/merge_sequence_git_to_svn.pdf}%
-\captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
-\label{merge_sequence_git_to_svn}%
-\end{center}
-
-\begin{center}
-\includegraphics[width=\textwidth]{img/diagrams/merge_sequence_svn_to_git.pdf}%
-\captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
-\label{merge_sequence_svn_to_git}%
-\end{center}
-
-\begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_full_mergeinfo_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{nested_merge_full_mergeinfo_git_to_svn}%
@@ -140,6 +128,18 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_partly_mergeinfo_svn_to_git.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{nested_merge_partly_mergeinfo_svn_to_git}%
+\end{center}
+
+\begin{center}
+\includegraphics[width=\textwidth]{img/diagrams/merge_sequence_git_to_svn.pdf}%
+\captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
+\label{merge_sequence_git_to_svn}%
+\end{center}
+
+\begin{center}
+\includegraphics[width=\textwidth]{img/diagrams/merge_sequence_svn_to_git.pdf}%
+\captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
+\label{merge_sequence_svn_to_git}%
 \end{center}
 
 \begin{center}
