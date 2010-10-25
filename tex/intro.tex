@@ -2,29 +2,43 @@
 % git history graph - green color, svn - red, and here are examples...%
 % Use "combined history graph" instead of "generalized history graph"%
 \renewcommand{\figurename}{Diagram}
-In this paper we introduce translation mechanism of basic concepts employed by Subversion and Git. \emph{Translator} is the server-side implementation of this mechanism.
+In this paper we introduce translation mechanism for the fundametal concepts employed by Subversion and Git.
+\emph{Translator} is the server-side implementation of this mechanism.
+\subsection{Notation}
+This specification uses two-layer notation to illustrate translation scenarios. First layer represents 
+Subversion history as a sequence of revisions (red circles), while second layer represents Git repository history 
+as a sequence of Git commits (green circles) connected with child-parent relationship (arrows pointing from the child 
+commit to the parent one). 
 \\\\
-We use the notation of combined history to illustrate considered scenarios. The combined history consists of two layers:
+Combination of these two layers in a single diagram provides example of a particular translation scenario by
+establishing connection between Git repository and Subversion repository histories. Connection is established
+by putting Git commits on top of the corresponding Subversion revisions, whenever such correspondence exists.
 \\\\
-1. Subversion history layer. See diagram \ref{svn_layer}.
+Refer to the following three diagrams for individual layers notation and example of a combined history diagram.
+\subsubsection{Subversion history layer}
 \begin{center}
 \includegraphics[width=\textwidth]{img/legend/svn_layer.pdf}%
 \captionof{figure}{Subversion history layer.}
 \label{svn_layer}%
 \end{center}
-
-2. Git history layer. See diagram \ref{git_layer}.
+Each row represents single Subversion revision. Each row might contain one of more circles which represent
+modifications of the corresponding branches in Subversion repository enclosed in a single revision. A special
+case of modification is branch deletion, which is depicted as a red cross instead of circle.\\\\
+Copies are shown with green arrows and merge tracking references with the red ones.
+\subsubsection{Git history layer}
 \begin{center}
 \includegraphics[width=\textwidth]{img/legend/git_layer.pdf}%
 \captionof{figure}{Git history layer.}
 \label{git_layer}%
 \end{center}
-
-First parent of merge commits will be always depicted as vertical arrow.
-\\\\
-To illustrate combined history we join described layers to put Git commits on top of corresponding SVN revisions as depicted at diagram \ref{both_layers}.
+When Git commit has more than one parent (e.g. commit 'f'), link to the first parent is drawn as a vertical arrow and links to the other 
+parents are drawn as an oblique arrows.
+\subsubsection{Combined history diagram}
 \begin{center}
 \includegraphics[width=7.0cm]{img/legend/generalized_history.pdf}%
 \captionof{figure}{Combined history.}
 \label{both_layers}%
 \end{center}
+
+Combined history diagram is a result of a two layers combination, where Git commits (green circles) are put on top of the correspoding Subversion revisions (red circles). 
+In certain translation scenarios there might be no correspondence between particular Git commit and Subversion revision.
