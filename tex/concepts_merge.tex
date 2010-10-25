@@ -64,7 +64,8 @@ A sequence of cherry-pick revisions may lead the history of certain branch to th
 Git user is able to push an arbitrary number of commits at once. These commits may include merges. Assuming the scenario depicted at diagram \ref{boat_merge_named_shelve_git_to_svn}, Translator is able to determine the name of the branch merged into branch branch1 at commit \emph{f}.
 
 \begin{center}
-\includegraphics[width=\textwidth]{img/diagrams/boat_merge_named_shelve_git_to_svn.pdf}%
+\includegraphics[width=\textwidth]{img/diagrams/ml_boat_merge_named_shelve_git_to_svn.pdf}%
+%\includegraphics[width=\textwidth]{img/diagrams/boat_merge_named_shelve_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_named_shelve_git_to_svn}%
 \end{center}
@@ -72,7 +73,8 @@ Git user is able to push an arbitrary number of commits at once. These commits m
 Assuming the scenario depicted at diagram \ref{boat_merge_shelve_is_normal_branch_git_to_svn}, Translator is able to determine the name of the branch merged into branch branch1 by following first parent commits from branch2 reference.
 
 \begin{center}
-\includegraphics[width=\textwidth]{img/diagrams/boat_merge_shelve_is_normal_branch_git_to_svn.pdf}%
+\includegraphics[width=\textwidth]{img/diagrams/ml_boat_merge_shelve_is_normal_branch_git_to_svn.pdf}%
+%\includegraphics[width=\textwidth]{img/diagrams/boat_merge_shelve_is_normal_branch_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_shelve_is_normal_branch_git_to_svn}%
 \end{center}
@@ -80,7 +82,8 @@ Assuming the scenario depicted at diagram \ref{boat_merge_shelve_is_normal_branc
 There are scenarios when Translator is not able to determine the name of merged branch, see diagram \ref{boat_merge_git_to_svn}. For that case synthetic shelve branch created. Translator use specific namespace /shelves/ and name of person created the first commit on the shelve to generate the name of the branch. As soon as merge is performed the shelve is deleted.
 
 \begin{center}
-\includegraphics[width=\textwidth]{img/diagrams/boat_merge_git_to_svn.pdf}%
+\includegraphics[width=\textwidth]{img/diagrams/ml_boat_merge_git_to_svn.pdf}%
+%\includegraphics[width=\textwidth]{img/diagrams/boat_merge_git_to_svn.pdf}%
 \captionof{figure}{Merge of unnamed Git branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_git_to_svn}%
 \end{center}
@@ -91,7 +94,8 @@ It's common use case when multiple users performed modification and then merged 
 \\\\
 As an experimental feature for that case we introduce a shelve linearization approach depicted at diagram \ref{boat_merge_keep_history_linear_git_to_svn}.
 \begin{center}
-\includegraphics[width=\textwidth]{img/diagrams/boat_merge_keep_history_linear_git_to_svn.pdf}%
+\includegraphics[height=18.0cm]{img/diagrams/ml_boat_merge_keep_history_linear_git_to_svn.pdf}%
+%\includegraphics[width=\textwidth]{img/diagrams/boat_merge_keep_history_linear_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_keep_history_linear_git_to_svn}%
 \end{center}
