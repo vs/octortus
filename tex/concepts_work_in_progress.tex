@@ -36,6 +36,13 @@ but makes not attempt to represent Subversion operations as a Git Fork.\\\\
 Further versions of Translator might extend translation
 rules so that some specific copies and merges performed in Subversion repository are translated into Git Fork.
 
+\subsubsection{Fork-aware Subversion Repository Layout}
+
+In order to support translation of Git Forks to Subversion repository in the most efficient way, 
+preserving history of original repository in the forked one and allowing further translation of
+Git pull requests in terms of Subversion merges, 
+Subversion repository layout must have the following structure:
+
 \subsubsection{Forked Repository}
 Git Repository Fork creates new Git repository on GitHub. This new forked Git repository has the following 
 important features:
@@ -53,26 +60,21 @@ rN user\\
 =======================\\
 Fork comment             \\
 =======================\\
-A /\emph{user}/trunk copied from /trunk at rM\\
-A /\emph{user}/branches copied from /branches at rM\\
-A /\emph{user}/tags copied from /tags at rM\\\\
+A /\emph{fork-user}/trunk copied from /\emph{user}/trunk at rM\\
+A /\emph{fork-user}/branches copied from /\emph{user}/branches at rM\\
+A /\emph{fork-user}/tags copied from /\emph{user}/tags at rM\\\\
 
 Repository layout after the fork:\\
 
-/trunk\\
-/branches\\
-/tags\\
 /\emph{user}/trunk\\
 /\emph{user}/branches\\
-/\emph{user}/tags\\\\
-
-Certain limitations are enforces on the fork /\emph{user} directory - similar to the other top-level directories it might not be 
-copied or deleted. Subdirectories of /\emph{user} directory are subjects to the same limitations that are described in the "Fixed Repository Layout" section
-and additionally subdirectories of /\emph{user} directory might not be copied to the locations outside of the /\emph{user} directory.
-\\\\
-Changes made by Subversion users to the files and directories in /\emph{user} directory are translated to the Git commits in the forked Git
+/\emph{user}/tags\\
+/\emph{fork-user}/trunk\\
+/\emph{fork-user}/branches\\
+/\emph{fork-user}/tags\\\\
+Changes made by Subversion users to the files and directories in /\emph{fork-user} directory are translated to the Git commits in the forked Git
 repository and vice versa - Git commits in the forked Git repository are translated into Subversion revisions which modifies files
-and directories in the corresponding /\emph{user} directory of Subversion repository.
+and directories in the corresponding /\emph{fork-user} directory of Subversion repository.
 
 \subsubsection{Pull Request}
 
@@ -81,8 +83,8 @@ revision using standard translation rules. Additionally, Translator updates merg
 from the Subversion user perspective, translated revision looks like a merge of changes from the corresponding branches in the /\emph{user} directory. 
 Merge tracking information in Subversion repository after translation may look like:\\
 
-/trunk : from /\emph{user}/trunk:10-11\\
-/branches/b : from /\emph{user}/branches/b:10-11\\
+/\emph{user}/trunk : from /\emph{fork-user}/trunk:10-11\\
+/\emph{user}/branches/b : from /\emph{fork-user}/branches/b:10-11\\
 
 assuming that revisions 10 and 11 represent changes in the forked Git repository.
 
