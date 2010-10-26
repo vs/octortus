@@ -112,29 +112,40 @@ shown on the diagrams \ref{merge_commit_on_double_cherry_pick_svn_to_git} and \r
 \label{merge_commit_on_double_cherry_pick_branch_no_parent_svn_to_git}%
 \end{center}
 
-\subsubsection{Shelve Branches}
+\subsubsection{Shelf Branches}
 
-Git user is able to push an arbitrary number of commits at once. These commits may include merges. Assuming the scenario depicted at diagram \ref{boat_merge_named_shelve_git_to_svn}, Translator is able to determine the name of the branch merged into branch branch1 at commit \emph{f}.
-
+Git user is able to push an arbitrary number of commits at once. This set of Git commits might include Git merge commit, 
+so that some of the Git commits in the set are arranged into the structure we call \emph{shelf}. In general, \emph{shelf}
+translation includes:
+\begin{itemize}
+\item Creation of a temporary Subversion branch which correspond to the \emph{shelf};
+\item Translation of the "shelved" commits into revisions on that temporary branch;
+\item Translation of the merge commit into revision on the main branch, with svn:mergeinfo including all revisions
+of the temporary branch.
+\end{itemize}
+Examples of \emph{shelf} translation are shown in the diagrams \ref{boat_merge_named_shelve_git_to_svn} and \ref{boat_merge_shelve_is_normal_branch_git_to_svn}.
+In these examples it is possible to determine name of the temporary branch either because branch reference points directly to the 
+last \emph{shelf} commit (diagram \ref{boat_merge_named_shelve_git_to_svn}) or to the commit originating from the \emph{shelf} (diagram \ref{boat_merge_shelve_is_normal_branch_git_to_svn}).
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/boat_merge_named_shelve_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_named_shelve_git_to_svn}%
 \end{center}
-
-Assuming the scenario depicted at diagram \ref{boat_merge_shelve_is_normal_branch_git_to_svn}, Translator is able to determine the name of the branch merged into branch branch1 by following first parent commits from branch2 reference.
-
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/boat_merge_shelve_is_normal_branch_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_shelve_is_normal_branch_git_to_svn}%
 \end{center}
 
-There are scenarios when Translator is not able to determine the name of merged branch, see diagram \ref{boat_merge_git_to_svn}. For that case synthetic shelve branch created. Translator use specific namespace /shelves/ and name of person created the first commit on the shelve to generate the name of the branch. As soon as merge is performed the shelve is deleted.
+In certain cases, it is not possible to determine name of the temporary branch, as there is no branch reference pointing to
+the \emph{shelved} commits. In such case Translator creates temporary branch named after last shelf commit author and 
+deletes this temporary branch in the revision which corresponds to the merge commit (see diagram \ref{boat_merge_git_to_svn}). 
+\\\\
+To reduce clutter, anonymous temporary branch is created in the /shelves/ top-level Subversion directory, not in the /branches/ one where named branches reside.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/boat_merge_git_to_svn.pdf}%
-\captionof{figure}{Merge of unnamed Git branch being translated to a sequence of Subversion revisions.}
+\captionof{figure}{Merge of anonymous Git branch being translated to a sequence of Subversion revisions.}
 \label{boat_merge_git_to_svn}%
 \end{center}
 
