@@ -24,7 +24,7 @@ i.e. are translated to a regular Git commits with a single ancestor.
 
 Git merge commit (commit with multiple ancestors) is translated into Subversion revision in two steps.
 \begin{itemize}
-\item Git commit is translated into Subversion revision, accordingly to the rules described in "Revisions and Commits" section.
+\item Git commit is translated into Subversion revision, accordingly to the rules described in the section \ref{section_revisions_and_commits}.
 This new revision, by definition, only affects single Subversion branch directory.
 \item \textbf{svn:mergeinfo} property is updated on the affected Subversion branch directory so, that all merge
 commit ancestor branches are considered to be merged into this very branch in this very revision.
@@ -63,7 +63,7 @@ Just like with translation of the Git merge commit into Subversion revision,
 translation in the opposite direction is performed in two steps:
 \begin{itemize}
 \item Git commit corresponding to the Subversion revision being translated is created accordingly 
-to the rules described in "Revisions and Commits" section.
+to the rules described in the section \ref{section_revisions_and_commits}.
 \item Additional parent commits are set on the created Git commit - one parent for each branch
 referenced by Subversion svn:mergeinfo property.
 \end{itemize}
