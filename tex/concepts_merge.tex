@@ -149,7 +149,7 @@ To reduce clutter, anonymous temporary branch is created in the /shelves/ top-le
 \label{boat_merge_git_to_svn}%
 \end{center}
 
-\subsubsection{Nested Merge}
+\subsubsection{Complex Merge History}
 
 On Git merge commits translation, Translator might encounter Git merge commit which refer to the parent commit, which,
 in its turn, refers to another merge commit.
@@ -157,11 +157,11 @@ in its turn, refers to another merge commit.
 Subversion svn:mergeinfo property which have to be translated to a Git merge commit, might refer to the multiple branches,
 either directly enumerating all branches and revisions, or indirectly, by referring to the branch which has svn:mergeinfo property set on it referring to another branch.
 \\\\
-Above are examples of the \emph{nested merges}. On translating of such merges, Translator takes into account both
+Above are examples of the \emph{complex merges}. On translating of such merges, Translator takes into account both
 directly and indirectly referenced changes and performs translation accordingly to the composite set of the 
 changes referenced by the merge commits or by the svn:mergeinfo properties.
 \\\\
-Shown below are examples of the nested merges translation.
+Shown below are examples of the complex merge history translation.
 \\\\
 The first use case depicted at diagram \ref{nested_merge_full_mergeinfo_git_to_svn}. 
 Commit \emph{i} is the merge commit of branches branch3 and branch1. 
