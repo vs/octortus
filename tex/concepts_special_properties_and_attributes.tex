@@ -1,15 +1,37 @@
 \subsection{Properties and Attributes}
+Subversion keeps metadata as versioned properties which could be attached to any file or directory under version control. Among these properties there are special ones with \emph{svn:} prefix, Subversion has a number of mechanisms to handle this kind of properties.
+\\\\
+Git introduces a number of ways to keep metadata:
+\begin{enumerate}
+\compactlist
+\item Every directory and file has \emph{file mode} bytes stored at repository.
+\item \emph{.gitignore} file stores file path patterns to be ignored by Git operations.
+\item \emph{.gitattributes} is a special format file which could be added into any directory.
+\end{enumerate}
+
+Translation of the specified metadata is described in further sections.
+
 \subsubsection{End-of-Line Bytes and MIME Types}
 Subversion supports EOL bytes substitution since its early versions. Support of different EOL-styles was introduced in Git at version 1.7.2. Translator is supposed to perform valid EOL translation for users of Git version 1.7.2 or above.
 \\\\
-EOL substitution makes sense for text files only, so Translator performs translation of both EOL-style and MIME-type metadata. Subversion uses svn:eol-style and svn:mime-type properties for this kind of metadata. Git introduces "eol" and "text" attributes for that purpose.
+EOL substitution makes sense for text files only, so Translator performs translation of both EOL-style and MIME-type metadata. Subversion uses svn:eol-style and svn:mime-type properties for this kind of metadata. Git introduces \emph{eol} and \emph{text} attributes for that purpose. Subversion stores the metadata as property attached to file, but Git keeps attributes in .gitattributes file located at parent directory or higher.
 \\\\
-Considering certain file at Subversion repository we can find its counterpart at Git repository. In both repositories file and its counterpart have corresponding metadata related to EOL style and MIME type.
+If user modified EOL style or MIME type of certain file at Subversion repository, Translator applies this change to the metadata of corresponding file in Git repository. The ultimate goal of Translator for this case is to perform less modifications of .gitattributes files. To achieve that goal translation process has the following steps:
 
-\clearpage
-
-For every file in Subversion repository Translator performs translation of its metadata to the metadata of corresponding file in Git repository. Translation rules are specified at table \ref{eol_mime_svn_to_git}.
-\\\\\\\\\\\\
+\begin{enumerate}
+\compactlist
+\item Translator tries to find a corresponding line in one of .gitattributes files located at parent directory or higher.\\
+	
+\item If attribute line is found, Translator modifies this line according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+	
+\item If no .gitattributes file was found among parent directories of the file, Translator creates a new .gitattributes file at the parent directory of the file with the following content\\\\
+\emph{/$<$file-name$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+	
+\item If a number of .gitattributes files were found at parent directories of the file, the closest one is chosen. Translator appends to this file the following line\\\\
+\emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.
+\end{enumerate}
 
 \begin{center}
 \begin{tabular}{ | l | l | l | l |}
@@ -28,15 +50,25 @@ For every file in Subversion repository Translator performs translation of its m
 \end{tabular}
 \captionof{table}{Subversion to Git EOL and MIME translation.}
 \label{eol_mime_svn_to_git}
-\footnotetext[1]{\emph{undef}, in general, needs only to be set, if there is another rule which matches the file, otherwise we may skip that attributes at all.}
+\footnotetext[1]{\emph{undef}, in general, needs only to be set, if there is another rule which matches the file, otherwise we may skip these attributes at all.}
 \footnotetext[2]{Missing Subversion properties mean text, leave EOLs as is for that case.}
 \footnotetext[3]{Subversion recognizes CR EOL-style, Git does not.}
 \footnotetext[4]{svn:eol-style property value \emph{native} should stay the same, Git user may configure \emph{native} via \emph{core.eol} configuration property.} 
 \end{center}
 
-\clearpage
+Note that Git user should set \emph{core.eol} configuration parameter to allow correct handling of \emph{native} value of svn:eol-style property.
+\\\\
+Once Git user modified one of .gitattributes files, Translator performs the following steps to apply changes to the metadata of corresponding files in Subversion repository:
 
-In opposite directory for every file in Git repository Translator performs translation of its metadata to the metadata of corresponding file in Subversion repository using the rules specified at table \ref{eol_mime_git_to_svn}.
+\begin{enumerate}
+\compactlist
+\item For every file affected by the change new svn:eol-style and svn:mime-type properties are calculated.\\
+\item If new properties and the properties before the change don't differ, Translator performs no further actions.\\
+\item If for every modified property one of its values was \emph{undef}, Translator performs no further actions.\\
+\item Otherwise Translator attaches new properties to affected files.\\
+\end{enumerate}
+
+Note also that if Subversion repository contains .gitattributes file, its content is inaccessible from the Git repository.
 
 \begin{center}
 \begin{tabular}{ | l | l | l | l |}
@@ -67,8 +99,6 @@ In opposite directory for every file in Git repository Translator performs trans
 \footnotetext[5]{auto/unset is contradiction, but text has precedence over eol, hence treat like auto/undef}
 \end{center}
 
-In Subversion EOL style and MIME type metadata stored as properties of the file, but in Git this metadata could be specified at any parent directory of the file in special .gitignore file. 
-
 \subsubsection{Symbolic Links}
 Git stores symbolic link as an entry at Tree Object with a special file mode and corresponding blob containing "path/to/target".
 \\\\
@@ -77,5 +107,6 @@ Subversion represents symbolic link as a file with content "link path/to/target"
 So translation is performed by adding or removing "link " prefix to the file content and setting the mode or the property.
 \\\\
 If file at Subversion repository has svn:special property but its content doesn't start with "link " prefix, it is considered as an ordinary file and translated as a blob.
+\subsubsection{Executables}
 \subsubsection{Ignores}
 \subsubsection{Externals and Submodules}
