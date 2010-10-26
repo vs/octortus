@@ -20,21 +20,30 @@ If user modified EOL style or MIME type of certain file at Subversion repository
 
 \begin{enumerate}
 \compactlist
-\item Translator tries to find a corresponding line in one of .gitattributes files located at parent directory or higher.\\
+\item For every file with modified svn:eol-style or svn:mime-type property Translator tries to find a corresponding line in one of .gitattributes files located at parent directory or higher.\\
 	
-\item If attribute line is found, Translator modifies this line according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+\item If attribute line is found, Translator adjusts corresponding attribute to reflect performed change. Basically Translator adds a line with pattern corresponding to the path of modified file and a new attribute:\\\\
+
+\emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
+
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
 	
-\item If no .gitattributes file was found among parent directories of the file, Translator creates a new .gitattributes file at the parent directory of the file with the following content\\\\
+\item If no .gitattributes file was found among parent directories of the file, Translator creates a new .gitattributes file at the parent directory of the file with the following content:\\\\
+
 \emph{/$<$file-name$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
+
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
 	
 \item If a number of .gitattributes files were found at parent directories of the file, the closest one is chosen. Translator appends to this file the following line\\\\
+
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
-where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.
+
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+
+\item Finally for every created or modified .gitattributes file Translator tries to compact added rules using recursive path pattern instead of explicit path pattern.
 \end{enumerate}
 
-Note that this approach keeps comments at .gitattributes file unmodified during translation.
-
+Note that this approach keeps comments at .gitattributes file unmodified during the translation.
 
 \begin{center}
 \begin{tabular}{ | l | l | l | l |}
