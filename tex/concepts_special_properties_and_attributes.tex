@@ -77,7 +77,7 @@ Once Git user modified one of .gitattributes files, Translator performs the foll
 \item For every file affected by the change new svn:eol-style and svn:mime-type properties are calculated.\\
 \item If new properties and the properties before the change don't differ, Translator performs no further actions.\\
 \item If for every modified property one of its values was \emph{undef}, Translator performs no further actions.\\
-\item Otherwise Translator attaches new properties to affected files.\\
+\item Otherwise Translator sets new properties to affected files.\\
 \end{enumerate}
 
 Note also that if Subversion repository contains .gitattributes file, its content is inaccessible from the Git repository.
