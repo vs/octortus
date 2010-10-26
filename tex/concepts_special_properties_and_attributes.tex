@@ -100,13 +100,13 @@ Note also that if Subversion repository contains .gitattributes file, its conten
 \end{center}
 
 \subsubsection{Symbolic Links}
-Git stores symbolic link as an entry at Tree Object with a special file mode and corresponding blob containing "path/to/target".
+Git stores symbolic link as an entry at Tree Object with a special file mode and corresponding blob containing \emph{path/to/target}.
 \\\\
-Subversion represents symbolic link as a file with content "link path/to/target" and a property svn:special set on it.
+Subversion represents symbolic link as a file with content \emph{link path/to/target} and a property svn:special set on it.
 \\\\
-So translation is performed by adding or removing "link " prefix to the file content and setting the mode or the property.
+So translation is performed by adding or removing \emph{link } prefix to the file content and setting the mode or the property.
 \\\\
-If file at Subversion repository has svn:special property but its content doesn't start with "link " prefix, it is considered as an ordinary file and translated as a blob.
+If file at Subversion repository has svn:special property but its content doesn't start with \emph{link } prefix, it is considered as an ordinary file and translated as a blob.
 \subsubsection{Executables}
 \subsubsection{Ignores}
 \subsubsection{Externals and Submodules}
