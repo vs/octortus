@@ -17,6 +17,11 @@ Git has multiple ways to keep metatada, these ways are:
 This file allows to define special metadata attributes per file.
 \end{enumerate}
 
+Special files stored in Git repository, in particular .gitignore and .gitattributes are skept
+on content translation of Git commit to Subversion revision and thus contents of these files is not 
+accessible to Subversion users. It is not allowed to created new files and directories named
+.gitignore or .gitattributes in the Subversion repository.
+\\\\
 Translation rules for the metadata properties and attributes are described in further sections.
 
 \subsubsection{End-of-Line Bytes and MIME Types}
