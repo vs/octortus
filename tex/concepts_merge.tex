@@ -56,16 +56,16 @@ are excluded. For instance, in the example above, svn:mergeinfo will not contain
 Merge in Subversion is represented as a change of svn:mergeinfo property.
 \\\\
 Whenever such change of snv:mergeinfo is made on a branch directory and in 
-such a way that svn:mergeinfo includes all revisions made on one ore more branches, 
-then that svn:mergeinfo modification is translated into a Git merge commit.
+such a way that svn:mergeinfo includes continuous ranges of revisions
+made on one ore more branches (each range starting from the first revision of the branch), then that svn:mergeinfo modification is translated into a Git merge commit.
 \\\\
-Just like with translation of git merge commit into Subversion revision, 
+Just like with translation of the Git merge commit into Subversion revision, 
 translation in the opposite direction is performed in two steps:
 \begin{itemize}
-\item Git commit corresponding to Subversion revision being translated is created accordingly 
+\item Git commit corresponding to the Subversion revision being translated is created accordingly 
 to the rules described in "Revisions and Commits" section.
 \item Additional parent commits are set on the created Git commit - one parent for each branch
-referenced be Subversion svn:mergeinfo property.
+referenced by Subversion svn:mergeinfo property.
 \end{itemize}
 Diagrams \ref{simple_merge_svn_to_git} and \ref{simple_merge_branch_no_parent_svn_to_git} provides
 examples of svn:mergeinfo property (shown as a red arrow) change translation into Git Merge commit (commit \emph{f} on both
@@ -83,17 +83,22 @@ diagrams).
 \label{simple_merge_branch_no_parent_svn_to_git}%
 \end{center}
 
-\subsubsection{Cherry Pick}
+\subsubsection{Subversion Cherry-Pick Merges}
 
-Subversion tracks cherry-pick merges as well as merges of the whole branch history. Git doesn't support this kind of merges. Hence cherry-pick merge performed by Subversion user is translated as a new ordinary commit with corresponding changes at Git repository. This case depicted at diagram \ref{no_merge_commit_on_cherry_pick_svn_to_git}.
-
+Subversion tracks merges of the individual revisions, feature also known as cherry-pick merges. 
+Git has no means to express merge of the individual commits, hence changes of the svn:mergeinfo Subversion
+property that result from the cherry-pick merge (i.e. changes that add individual revisions to the svn:mergeinfo) are
+translated into the regular Git commit with a single parent commit (see diagram \ref{no_merge_commit_on_cherry_pick_svn_to_git}).
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/no_merge_commit_on_cherry_pick_svn_to_git.pdf}%
 \captionof{figure}{Cherry-pick merge being translated to ordinary commit.}
 \label{no_merge_commit_on_cherry_pick_svn_to_git}%
 \end{center}
 
-A sequence of cherry-pick revisions may lead the history of certain branch to the state when it includes the history of another branch as merge history. This scenario is depicted at diagrams \ref{merge_commit_on_double_cherry_pick_svn_to_git} and \ref{merge_commit_on_double_cherry_pick_branch_no_parent_svn_to_git}.
+Eventually, a sequence of cherry-pick merges may result in svn:mergeinfo property referring to the 
+continuous range of revisions on the merge source branch, starting from the first revision 
+of that branch. This last modification of svn:mergeinfo is translated into Git merge commit, as 
+shown on the diagrams \ref{merge_commit_on_double_cherry_pick_svn_to_git} and \ref{merge_commit_on_double_cherry_pick_branch_no_parent_svn_to_git}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/merge_commit_on_double_cherry_pick_svn_to_git.pdf}%
