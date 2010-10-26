@@ -119,4 +119,12 @@ Subversion user may set svn:ignore property on an arbitrary directory with a lis
 \\\\
 Git user may add a .gitignore file to version control and add a list of file path pattern to be ignored at directory and its children recursively.
 
-\subsubsection{Externals and Submodules}
+\subsubsection{Subversion Externals and Git Submodules}
+Translation of Subversion External to Git Submodule and vice versa is straightforward, 
+when Git repository referred by the submodule is hosted on GitHub or when Subversion svn:external property refers 
+to the branch of the repository hosted on the GitHub.
+\\\\
+Subversion external properties referring to third-party repositories, or to the non-branch directories of the GitHub Subversion repositories as
+well as any file externals are left untranslated.
+\\\\
+Git submodules referring to the third-party repositories are left untranslated.
