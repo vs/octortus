@@ -119,16 +119,54 @@ Subversion represents symbolic link as a file with content \emph{link path/to/ta
 So translation is performed by adding or removing \emph{link } prefix to the file content and setting the mode or the property.
 \\\\
 If file at Subversion repository has svn:special property but its content doesn't start with \emph{link } prefix, it is considered as an ordinary file and translated as a blob.
+
 \subsubsection{Executables}
 In Git repository, exectuable files are marked with a special file mode. Executable file in Subversion repository keeps svn:executable property. 
 Thus, svn:executable property is translated into Git file mode and vice versa directly.
-\subsubsection{Ignores}
 
-For files excluded from version control Subversion and Git introduce \emph{ignores} concept.
-\\\\
+\subsubsection{Ignores}
 Subversion user may set svn:ignore property on an arbitrary directory with a list of file name patterns as property value. Corresponding files will be ignored inside this directory.
 \\\\
 Git user may add a .gitignore file to version control and add a list of file path pattern to be ignored at directory and its children recursively.
+\\\\
+If user modified svn:ignore property of certain directory at Subversion repository, Translator applies this change to the patterns of certain .gitignore files in Git repository. The ultimate goal of Translator for this case is to perform less modifications of .gitignore files. To achieve that goal translation process has the following steps:
+
+\begin{enumerate}
+\compactlist
+\item For every directory with modified svn:ignore property Translator tries to find a corresponding line in one of .gitignore files located at this directory or higher.\\
+	
+\item If ignore pattern line is found, Translator adjusts corresponding ignore rule to reflect performed change. Basically Translator adds a line
+
+\emph{/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\\\
+
+If svn:ignore property was added or modified, or \\
+
+\emph{!/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\\\
+
+If svn:ignore property was removed from the directory.\\
+	
+\item Ignore pattern line was not found, thus svn:ignore property was added. If no .gitignore file was found among the directory and its parent directories, Translator creates a new .gitignore file at the directory with the following content:\\\\
+
+\emph{/$<$ignore-pattern$>$}\\\\
+	
+\item If a number of .gitignore files were found at the directory or at its parent directories, the closest one is chosen. Translator appends to this file the following line\\\\
+
+\emph{/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\\\
+
+\item Finally for every created or modified .gitignore file Translator tries to compact added rules using recursive path pattern instead of explicit path pattern where it is possible.
+\end{enumerate}
+
+Note that this approach keeps comments at .gitignore file unmodified during the translation.
+\\\\
+Once Git user modified one of .gitignore files, Translator performs the following steps to apply changes to svn:ignore property of corresponding directories in Subversion repository:
+
+\begin{enumerate}
+\compactlist
+\item For every directory affected by the change, new svn:ignore property is calculated according to the ignore patterns of all .gitignore files located at the directory and its parent directories.\\
+\item If new properties and the properties before the change differ, Translator sets calculated svn:ignore properties on affected directories.\\
+\end{enumerate}
+
+Note also that if Subversion repository contains .gitignore file, its content is inaccessible from the Git repository.
 
 \subsubsection{Subversion Externals and Git Submodules}
 \label{section_externals_and_submodules}
