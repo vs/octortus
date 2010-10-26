@@ -46,7 +46,7 @@ where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated accordi
 Note that this approach keeps comments at .gitattributes file unmodified during the translation.
 
 \begin{center}
-\begin{tabular}{ | l | l | l | l |}
+\begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
 	\hline
 	svn:eol-style &   svn:mime-type &   text  & eol \\ \hline \hline
 	-             &   text/-        &   unset & undef \footnotemark[1] \footnotemark[2] \\ \hline
@@ -83,9 +83,9 @@ Once Git user modified one of .gitattributes files, Translator performs the foll
 Note also that if Subversion repository contains .gitattributes file, its content is inaccessible from the Git repository.
 
 \begin{center}
-\begin{tabular}{ | l | l | l | l |}
+\begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
 	\hline
-	text  & eol      &  svn:eol-style  &  svn:mime-type \\ \hline
+	text  & eol      &  svn:eol-style  &  svn:mime-type \\ \hline \hline
 	unset & undef    &  -              &  -/binary \footnotemark[1] \\ \hline
 	unset & unset    &  -              &  -/binary \footnotemark[2] \\ \hline
 	unset & set      &  native         &  - \footnotemark[3] \\ \hline
