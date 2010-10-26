@@ -74,9 +74,9 @@ Once Git user modified one of .gitattributes files, Translator performs the foll
 
 \begin{enumerate}
 \compactlist
-\item For every file affected by the change new svn:eol-style and svn:mime-type properties are calculated.\\
+\item For every file affected by the change new svn:eol-style and svn:mime-type properties are calculated according to the rules specified at the table \ref{eol_mime_git_to_svn}.\\
 \item If new properties and the properties before the change don't differ, Translator performs no further actions.\\
-\item If for every modified property one of its values was \emph{undef}, Translator performs no further actions.\\
+\item If new and old properties differ only at those values which were calculated upon \emph{undef} attribute value, Translator performs no further actions.\\
 \item Otherwise Translator sets new properties to affected files.\\
 \end{enumerate}
 
