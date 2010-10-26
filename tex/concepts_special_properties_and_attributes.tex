@@ -4,11 +4,12 @@ Subversion supports EOL bytes substitution since its early versions. Support of 
 \\\\
 EOL substitution makes sense for text files only, so Translator performs translation of both EOL-style and MIME-type metadata. Subversion uses svn:eol-style and svn:mime-type properties for this kind of metadata. Git introduces "eol" and "text" attributes for that purpose.
 \\\\
-Considering certain file at Subversion repository we can find its counterpart at Git repository. In both repositories file has corresponding metadata related to its EOL style and MIME type. Modification of the metadata at one repository is translated to the metadata of the counterpart by Translator. The rules of this translation are specified further.
+Considering certain file at Subversion repository we can find its counterpart at Git repository. In both repositories file and its counterpart have corresponding metadata related to EOL style and MIME type. Modification of the metadata at one repository is translated to the metadata of the counterpart by Translator. 
 
 \clearpage
 
-Subversion to Git translation rules are specified at table \ref{eol_mime_svn_to_git}.
+For every file in Subversion repository Translator performs translation of its metadata to the metadata of corresponding file in Git repository. Translation rules are specified at table \ref{eol_mime_svn_to_git}.
+\\\\\\\\\\\\
 
 \begin{center}
 \begin{tabular}{ | l | l | l | l |}
@@ -35,7 +36,7 @@ Subversion to Git translation rules are specified at table \ref{eol_mime_svn_to_
 
 \clearpage
 
-Git to Subversion translation rules are specified at table \ref{eol_mime_git_to_svn}.
+In opposite directory for every file in Git repository Translator performs translation of its metadata to the metadata of corresponding file in Subversion repository using the rules specified at table \ref{eol_mime_git_to_svn}.
 
 \begin{center}
 \begin{tabular}{ | l | l | l | l |}
@@ -65,6 +66,8 @@ Git to Subversion translation rules are specified at table \ref{eol_mime_git_to_
 \footnotetext[4]{set/unset is contradiction, but text has precedence over eol, hence treat like set/undef.}
 \footnotetext[5]{auto/unset is contradiction, but text has precedence over eol, hence treat like auto/undef}
 \end{center}
+
+In Subversion EOL style and MIME type metadata stored as properties of the file, but in Git this metadata could be specified at any parent directory of the file in special .gitignore file. 
 
 \subsubsection{Symbolic Links}
 Git stores symbolic link as an entry at Tree Object with a special file mode and corresponding blob containing "path/to/target".
