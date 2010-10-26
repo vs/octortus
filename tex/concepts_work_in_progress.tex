@@ -31,6 +31,7 @@ Shelf linearization could be applied to any branch to keep history linear, but \
 for the linearization approach.
 
 \subsubsection{Git Forks}
+
 Git Fork is an unique feature of GitHub. First version of Translator translates Git Fork and pull request using Subversion concepts of copy and merge,
 but makes not attempt to represent Subversion operations as a Git Fork.\\\\
 Further versions of Translator might extend translation
@@ -41,8 +42,37 @@ rules so that some specific copies and merges performed in Subversion repository
 In order to support translation of Git Forks to Subversion repository in the most efficient way, 
 preserving history of original repository in the forked one and allowing further translation of
 Git pull requests in terms of Subversion merges, 
-Subversion repository layout must have the following structure:
+Subversion repository layout must have the following structure:\\
 
+/\emph{user}/trunk\\
+/\emph{user}/branches\\
+/\emph{user}/tags\\
+
+where \emph{user} is name of the user who have created this repository or 
+corresponding Git repository. Each Git fork will add the following directories to the above:\\
+
+/\emph{fork-user}/trunk\\
+/\emph{fork-user}/branches\\
+/\emph{fork-user}/tags\\
+
+where \emph{fork-user} is the name of the user who have forked original Git repository or fork of the original Git repository.
+\\\\
+In order to identify uniquely Subversion repository backend, both user name and name of the project are needed. Thus,
+Subversion users will use the following URLs to access Subversion repository:\\
+
+\textbf{Project Trunk Location}: http://svnhub.com/\emph{project}/\emph{user}/trunk\\
+\textbf{Repository Root}: http://svnhub.com/\emph{project}\\
+
+Last URL doesn't allow to identify Subversion repository as it is shared by the independent projects of the same 
+name created by different users. In order to resolve this ambigousity it will be necessary to require user authorization
+on access to repository root URL. In general, repository root does not need to be access in the course of normal
+Subversion workflow, but certain versions of Subversion client does access it due to the bugs in implementation and this 
+should be taken into account by Translator.\\\\
+Other schemes for Subversion repository layout and access URLs might be proposed. For instance, \emph{project} component
+might be moved to the host name, so that project trunk URL will look like: http://\emph{project}.svnhub.com/\emph{user}/trunk
+\\\\
+Exact scheme will be defined in the future versions of this specification in case effective Git Forks translation support 
+is required.
 \subsubsection{Forked Repository}
 Git Repository Fork creates new Git repository on GitHub. This new forked Git repository has the following 
 important features:
@@ -62,7 +92,7 @@ Fork comment             \\
 =======================\\
 A /\emph{fork-user}/trunk copied from /\emph{user}/trunk at rM\\
 A /\emph{fork-user}/branches copied from /\emph{user}/branches at rM\\
-A /\emph{fork-user}/tags copied from /\emph{user}/tags at rM\\\\
+A /\emph{fork-user}/tags copied from /\emph{user}/tags at rM\\
 
 Repository layout after the fork:\\
 
@@ -88,7 +118,7 @@ Merge tracking information in Subversion repository after translation may look l
 
 assuming that revisions 10 and 11 represent changes in the forked Git repository.
 
-\subsection{Not (yet) Translated Concepts}
+\subsection{Not Translated Concepts}
 This version of Translator specification does not cover translation of the following concepts:
 \begin{itemize}
 \item Subversion svn:keywords special property
