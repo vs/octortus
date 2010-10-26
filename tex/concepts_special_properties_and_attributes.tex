@@ -112,7 +112,7 @@ So translation is performed by adding or removing \emph{link } prefix to the fil
 If file at Subversion repository has svn:special property but its content doesn't start with \emph{link } prefix, it is considered as an ordinary file and translated as a blob.
 \subsubsection{Executables}
 In Git repository, exectuable files are marked with a special file mode. Executable file in Subversion repository keeps svn:executable property. 
-One is translated into another directly, there are no special use cases.
+Thus, svn:executable property is translated into Git file mode and vice versa directly, there are no special use cases.
 \subsubsection{Ignores}
 
 For files excluded from version control Subversion and Git introduce \emph{ignores} concept.
