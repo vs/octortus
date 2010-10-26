@@ -176,9 +176,22 @@ Shelve linearization could be applied to any branch to keep history linear. But 
 
 \subsubsection{Nested Merge}
 
-In this section we consider scenarios when revision or commit includes the merge history of another merges.
-
-The first use case depicted at diagram \ref{nested_merge_full_mergeinfo_git_to_svn}. Commit \emph{i} is the merge commit of branches branch3 and branch1. But branch1 has a commit \emph{f} which is commit merged branch2 into branch1. For that case at corresponding revision r9 we add svn:mergeinfo property to branch3 which includes the merge history of all commits being merged at commit \emph{i}.
+On Git merge commits translation, Translator might encounter Git merge commit which refer to the parent commit, which,
+in its turn, refers to another merge commit.
+\\\\
+Subversion svn:mergeinfo property which have to be translated to a Git merge commit, might refer to the multiple branches,
+either directly enumerating all branches and revisions, or indirectly, by referring to the branch which has svn:mergeinfo property set on it referring to another branch.
+\\\\
+Above are examples of the \emph{nested merges}. On translating of such merges, Translator takes into account both
+directly and indirectly referenced changes and performs translation accordingly to the composite set of the 
+changes referenced by the merge commits or by the svn:mergeinfo properties.
+\\\\
+Shown below are examples of the nested merges translation.
+\\\\
+The first use case depicted at diagram \ref{nested_merge_full_mergeinfo_git_to_svn}. 
+Commit \emph{i} is the merge commit of branches branch3 and branch1. 
+But branch1 has a commit \emph{f} which is commit merged branch2 into branch1. 
+For that case at corresponding revision r9 we add svn:mergeinfo property to branch3 which includes the merge history of all commits being merged at commit \emph{i}.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_full_mergeinfo_git_to_svn.pdf}%
@@ -228,7 +241,9 @@ Merged revisions may not include the whole history of certain branch. It is comm
 
 \subsubsection{Octopus Merge}
 
-Both Subversion and Git support \emph{octopus merge}, when an arbitrary number of branches being merged into the certain branch at single revision or commit. Translator supports this kind of history change as depicted at diagrams \ref{octopus_merge_git_to_svn} and \ref{octopus_merge_svn_to_git}.
+Both Subversion and Git support so called \emph{octopus merge}, - merge in which an arbitrary number of branches are merged into the target branch in a single revision or commit. 
+\\\\
+Translator supports this kind of merge in a way shown in the diagrams \ref{octopus_merge_git_to_svn} (for Git to Subversion translation) and \ref{octopus_merge_svn_to_git} (for Subversion to Git translation).
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/octopus_merge_git_to_svn.pdf}%
