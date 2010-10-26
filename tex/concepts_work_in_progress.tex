@@ -118,6 +118,13 @@ Merge tracking information in Subversion repository after translation may look l
 
 assuming that revisions 10 and 11 represent changes in the forked Git repository.
 
+\subsubsection{Special Submodules Format}
+When svn:externals being translated does not satisfy criterias described in the section \ref{section_externals_and_submodules},
+it still might be translated to the Git submodule definition which is however stored in a special format.
+\\\\
+This special format will be ignored by the standard Git client, but Git client which supports this special format of submodule defintion, 
+might process such Submodule in a special way, for instance, it may import referred part of the Subversion repository into the local Git repository.
+
 \subsection{Concepts not covered by this Specification}
 This version of Translator specification does not cover translation of the following concepts:
 \begin{itemize}
