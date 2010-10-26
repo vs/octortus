@@ -17,41 +17,49 @@ Git has multiple ways to keep metatada, these ways are:
 This file allows to define special metadata attributes per file.
 \end{enumerate}
 
-Translation of the specified metadata is described in further sections.
+Translation rules for the metadata properties and attributes are described in further sections.
 
 \subsubsection{End-of-Line Bytes and MIME Types}
-Subversion supports EOL bytes substitution since its early versions. Support of different EOL-styles was introduced in Git at version 1.7.2. Translator is supposed to perform valid EOL translation for users of Git version 1.7.2 or above.
+Subversion supports EOL bytes substitution since its early versions. 
+Support of different EOL-styles was introduced in Git at version 1.7.2. Taking this in account, 
+Translator will perform valid EOL translation only for the users of Git version 1.7.2 or newer.
 \\\\
-EOL substitution makes sense for text files only, so Translator performs translation of both EOL-style and MIME-type metadata. Subversion uses svn:eol-style and svn:mime-type properties for this kind of metadata. Git introduces \emph{eol} and \emph{text} attributes for that purpose. Subversion stores the metadata as property attached to file, but Git keeps attributes in .gitattributes file located at parent directory or higher.
+EOL substitution only makes sense for text files only. Thus, in this specification, rules 
+for translating EOL-style and MIME-type metadata are combined. 
 \\\\
-If user modified EOL style or MIME type of certain file at Subversion repository, Translator applies this change to the metadata of corresponding file in Git repository. The ultimate goal of Translator for this case is to perform less modifications of .gitattributes files. To achieve that goal translation process has the following steps:
+\textbf{Subversion to Git Translation}
+\\\\
+Subversion uses svn:eol-style and svn:mime-type properties set on individual files to keep corresponding kinds of metadata.
+Value of these properties set on a file are translated into the corresponding lines in \emph{.gitattributes} file, which ensures that 
+corresponding file in the Git repository has proper \emph{eol} and \emph{text} attributes set.
+\\\\
+Upon translation of these properties Translator tries to minimize amount of modifications
+made to .gitattributes files. To translate svn:eol-style and svn:mime-type properties changes, 
+Translator uses the following algorithm:
 
 \begin{enumerate}
 \compactlist
-\item For every file with modified svn:eol-style or svn:mime-type property Translator tries to find a corresponding line in one of .gitattributes files located at parent directory or higher.\\
+\item For every file wich has svn:eol-style or svn:mime-type property modified, Translator looks for a corresponding line in one of .gitattributes files located in parent directory or 
+at the higher level of the directories hierarchy.\\
 	
 \item If attribute line is found, Translator adjusts corresponding attribute to reflect performed change. Basically Translator adds a line with pattern corresponding to the path of modified file and a new attribute:\\\\
-
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
-
-where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
 	
-\item If no .gitattributes file was found among parent directories of the file, Translator creates a new .gitattributes file at the parent directory of the file with the following content:\\\\
-
+\item If no .gitattributes file was found in the ancestor directories of the file, Translator creates new .gitattributes file in the parent directory of the file with the following contents:\\\\
 \emph{/$<$file-name$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
-
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
 	
-\item If a number of .gitattributes files were found at parent directories of the file, the closest one is chosen. Translator appends to this file the following line\\\\
-
+\item If more than one .gitattributes file was found in the parent directories of the file, then the closest one is chosen. 
+Translator appends the following line to the selected .gitattributes file:\\\\
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
-
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
-
-\item Finally for every created or modified .gitattributes file Translator tries to compact added rules using recursive path pattern instead of explicit path pattern.
+\item Finally, for each created or modified .gitattributes file, Translator compacts added rules transforming 
+explicit path patterns to the recursive path patterns when possible.
 \end{enumerate}
 
-Note that this approach keeps comments at .gitattributes file unmodified during the translation.
+\emph{Note}: comments stored in .gitattributes file left unmodified by Translator.\\
+\emph{Note}: Git user must set \emph{core.eol} configuration parameter to allow correct handling of the \emph{native} value of svn:eol-style property.
 
 \begin{center}
 \begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
@@ -75,20 +83,20 @@ Note that this approach keeps comments at .gitattributes file unmodified during 
 \footnotetext[3]{Subversion recognizes CR EOL-style, Git does not.}
 \footnotetext[4]{svn:eol-style property value \emph{native} should stay the same, Git user may configure \emph{native} via \emph{core.eol} configuration property.} 
 \end{center}
+\newpage
+\textbf{Git to Subversion Translation}\\
 
-Note that Git user should set \emph{core.eol} configuration parameter to allow correct handling of \emph{native} value of svn:eol-style property.
-\\\\
-Once Git user modified one of .gitattributes files, Translator performs the following steps to apply changes to the metadata of corresponding files in Subversion repository:
+When .gitattributes file is modified, Translator uses the following algorithm steps to apply changes to the metadata of corresponding files in Subversion repository:
 
 \begin{enumerate}
 \compactlist
-\item For every file affected by the change new svn:eol-style and svn:mime-type properties are calculated according to the rules specified at the table \ref{eol_mime_git_to_svn}.\\
-\item If new properties and the properties before the change don't differ, Translator performs no further actions.\\
-\item If new and old properties differ only at those values which were calculated upon \emph{undef} attribute value, Translator performs no further actions.\\
+\item For every file affected by the change new svn:eol-style and svn:mime-type properties are computed accordingly to the rules defined in the table \ref{eol_mime_git_to_svn}.\\
+\item When there are no changes detected, Translator performs no further actions.\\
+\item When new and old properties values differ only in those values which were computed from \emph{undef} attribute value, Translator performs no further actions.\\
 \item Otherwise Translator sets new properties to affected files.\\
 \end{enumerate}
 
-Note also that if Subversion repository contains .gitattributes file, its content is inaccessible from the Git repository.
+\emph{Note}: While Subversion repository contains .gitattributes file, its content is not available from the Git repository.
 
 \begin{center}
 \begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
