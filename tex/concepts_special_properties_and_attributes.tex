@@ -1,12 +1,20 @@
 \subsection{Properties and Attributes}
-Subversion keeps metadata as versioned properties which could be attached to any file or directory under version control. Among these properties there are special ones with \emph{svn:} prefix, Subversion has a number of mechanisms to handle this kind of properties.
+This section describes translation rules for the metadata set on repository files and directories in Git or Subversion.
+Aim of Translator is to preserve meaning of the metadata information while translating from one version control 
+to another.
 \\\\
-Git introduces a number of ways to keep metadata:
+Subversion keeps metadata in form of versioned properties that could be set on any file or directory in the repository.
+Properties might have any name, but there are number of reserved names, with \emph{svn:} prefix for special properties. 
+These special properties, been set on a file or directory, controls various aspects of Subversion client behaviour, 
+from EOL substitution to support of the external repositories.
+\\\\
+Git has multiple ways to keep metatada, these ways are:
 \begin{enumerate}
 \compactlist
-\item Every directory and file has \emph{file mode} bytes stored at repository.
-\item \emph{.gitignore} file stores file path patterns to be ignored by Git operations.
-\item \emph{.gitattributes} is a special format file which could be added into any directory.
+\item Every directory and file has \emph{file mode} bytes stored at repository;
+\item \emph{.gitignore} file stores file path patterns to be ignored by Git operations;
+\item \emph{.gitattributes} is a file in a special format that could be present in any directory.
+This file allows to define special metadata attributes per file.
 \end{enumerate}
 
 Translation of the specified metadata is described in further sections.
