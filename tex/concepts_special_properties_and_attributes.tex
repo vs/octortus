@@ -1,5 +1,69 @@
 \subsection{Properties and Attributes}
 \subsubsection{End-of-Line Bytes and MIME Types}
+Subversion supports EOL bytes substitution since its early versions. Support of different EOL-styles was introduced in Git at version 1.7.2. Translator is supposed to perform valid EOL translation for users of Git version 1.7.2 or above.
+\\\\
+EOL substitution makes sense for text files only, so Translator performs translation of both EOL-style and MIME-type metadata. Subversion uses svn:eol-style and svn:mime-type properties for this kind of metadata. Git introduces "eol" and "text" attributes for that purpose.
+
+\clearpage
+
+Subversion to Git translation rules are specified at table \ref{eol_mime_svn_to_git}.
+
+\begin{center}
+\begin{tabular}{ | l | l | l | l |}
+	\hline
+	svn:eol-style &   svn:mime-type &   text  & eol \\ \hline \hline
+	-             &   text/-        &   unset & undef \footnotemark[1] \footnotemark[2] \\ \hline
+	-             &   binary        &   unset & undef \\ \hline
+	lf            &   text/-        &   set   & lf \\ \hline
+	lf            &   binary        &   unset & undef \\ \hline
+	cr            &   text/-        &   unset & undef  \footnotemark[3] \\ \hline
+	cr            &   binary        &   unset & undef \\ \hline
+	crlf          &   text/-        &   set   & crlf \\ \hline
+	crlf          &   binary        &   unset & undef \\ \hline
+	native        &   text/-        &   set   & undef \footnotemark[4] \\ \hline
+	native        &   binary        &   unset & undef \\ \hline
+\end{tabular}
+\captionof{table}{Subversion to Git EOL and MIME translation.}
+\label{eol_mime_svn_to_git}
+\footnotetext[1]{\emph{undef}, in general, needs only to be set, if there is another rule which matches the file, otherwise we may skip that attributes at all.}
+\footnotetext[2]{Missing Subversion properties mean text, leave EOLs as is for that case.}
+\footnotetext[3]{Subversion recognizes CR EOL-style, Git does not.}
+\footnotetext[4]{svn:eol-style property value \emph{native} should stay the same, Git user may configure \emph{native} via \emph{core.eol} configuration property.} 
+\end{center}
+
+\clearpage
+
+Git to Subversion translation rules are specified at table \ref{eol_mime_git_to_svn}.
+
+\begin{center}
+\begin{tabular}{ | l | l | l | l |}
+	\hline
+	text  & eol      &  svn:eol-style  &  svn:mime-type \\ \hline
+	unset & undef    &  -              &  -/binary \footnotemark[1] \\ \hline
+	unset & unset    &  -              &  -/binary \footnotemark[2] \\ \hline
+	unset & set      &  native         &  - \footnotemark[3] \\ \hline
+	unset & lf       &  lf             &  - \\ \hline
+	unset & crlf     &  crlf           &  - \\ \hline
+	set   & undef    &  native         &  - \\ \hline
+	set   & unset    &  native         &  - \footnotemark[4] \\ \hline
+	set   & set      &  native         &  - \\ \hline
+	set   & lf       &  lf             &  - \\ \hline
+	set   & crlf     &  crlf           &  - \\ \hline
+	auto  & undef    &  native/-       &  -/binary \footnotemark[1] \\ \hline
+	auto  & unset    &  native/-       &  -/binary \footnotemark[5] \\ \hline
+	auto  & set      &  native/-       &  -/binary \\ \hline
+	auto  & lf       &  lf/-           &  -/binary \\ \hline
+	auto  & crlf     &  crlf/-         &  -/binary \\ \hline
+\end{tabular}
+\captionof{table}{Git to Subversion EOL and MIME translation.}
+\label{eol_mime_git_to_svn}
+\footnotetext[1]{Perform binary check.}
+\footnotetext[2]{unset/unset is redundant, treat it like unset/undef.}
+\footnotetext[3]{From Git documentation:\\eol - This attribute sets a specific line-ending style to be used in the working directory. It enables end-of-line normalization without any content checks, effectively setting the text attribute.}
+\footnotetext[4]{set/unset is contradiction, but text has precedence over eol, hence treat like set/undef.}
+\footnotetext[5]{auto/unset is contradiction, but text has precedence over eol, hence treat like auto/undef}
+\end{center}
+
 \subsubsection{Symbolic Links}
 Git stores symbolic link as an entry at Tree Object with a special file mode and corresponding blob containing "path/to/target".
 \\\\
