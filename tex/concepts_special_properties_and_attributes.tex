@@ -32,6 +32,9 @@ where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated accordi
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.
 \end{enumerate}
+\\\\
+Note that this approach keeps comments at .gitattributes file unmodified during translation.
+
 
 \begin{center}
 \begin{tabular}{ | l | l | l | l |}
@@ -109,4 +112,11 @@ So translation is performed by adding or removing \emph{link } prefix to the fil
 If file at Subversion repository has svn:special property but its content doesn't start with \emph{link } prefix, it is considered as an ordinary file and translated as a blob.
 \subsubsection{Executables}
 \subsubsection{Ignores}
+
+For files excluded from version control Subversion and Git introduce \emph{ignores} concept.
+\\\\
+Subversion user may set svn:ignore property on an arbitrary directory with a list of file name patterns as property value. Corresponding files will be ignored inside this directory.
+\\\\
+Git user may add a .gitignore file to version control and add a list of file path pattern to be ignored at directory and its children recursively.
+
 \subsubsection{Externals and Submodules}
