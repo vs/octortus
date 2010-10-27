@@ -1,14 +1,14 @@
 \subsection{Properties and Attributes}
 This section describes translation rules for the metadata set on repository files and directories in Git or Subversion.
-Aim of Translator is to preserve meaning of the metadata information while translating from one version control 
+Aim of Translator is to preserve meaning of the metadata information while translating from one version control system
 to another.
 \\\\
 Subversion keeps metadata in form of versioned properties that could be set on any file or directory in the repository.
 Properties might have any name, but there are number of reserved names, with \emph{svn:} prefix for special properties. 
-These special properties, been set on a file or directory, controls various aspects of Subversion client behaviour, 
+These special properties, been set on a file or directory, controls various aspects of Subversion client behavior, 
 from EOL substitution to support of the external repositories.
 \\\\
-Git has multiple ways to keep metatada, these ways are:
+Git has multiple ways to keep metadata, these ways are:
 \begin{enumerate}
 \compactlist
 \item Every directory and file has \emph{file mode} bytes stored at repository;
@@ -17,7 +17,7 @@ Git has multiple ways to keep metatada, these ways are:
 This file allows to define special metadata attributes per file.
 \end{enumerate}
 
-Special files stored in Git repository, in particular .gitignore and .gitattributes are skept
+Special files stored in Git repository, in particular .gitignore and .gitattributes are kept
 on content translation of Git commit to Subversion revision and thus contents of these files is not 
 accessible to Subversion users. It is not allowed to created new files and directories named
 .gitignore or .gitattributes in the Subversion repository.
@@ -44,7 +44,7 @@ Translator uses the following algorithm:
 
 \begin{enumerate}
 \compactlist
-\item For every file wich has svn:eol-style or svn:mime-type property modified, Translator looks for a corresponding line in one of .gitattributes files located in the parent directory or 
+\item For every file which has svn:eol-style or svn:mime-type property modified, Translator looks for a corresponding line in one of .gitattributes files located in the parent directory or 
 at the higher level of the directories hierarchy.\\
 	
 \item If attribute line is found, Translator adjusts corresponding attribute to reflect performed change. Basically Translator adds a line with pattern corresponding to the path of modified file and a new attribute:\\\\
@@ -53,14 +53,14 @@ where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated accordi
 	
 \item If no .gitattributes file was found in the ancestor directories of the file, Translator creates new .gitattributes file in the parent directory of the file with the following contents:\\\\
 \emph{/$<$file-name$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
-where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
 	
 \item If more than one .gitattributes file was found in the parent directories of the file, then the closest one is chosen. 
 Translator appends the following line to the selected .gitattributes file:\\\\
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
-where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules specified at table \ref{eol_mime_svn_to_git}.\\
+where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
 \item Finally, for each created or modified .gitattributes file, Translator compacts added rules transforming 
-explicit path patterns to the recursive path patterns when possible.
+explicit path patterns to the recursive path patterns where possible.
 \end{enumerate}
 
 \emph{Note}: comments stored in .gitattributes file left unmodified by Translator.\\
@@ -140,7 +140,7 @@ So translation is performed by adding or removing \emph{link } prefix to the fil
 If file at Subversion repository has svn:special property but its content doesn't start with \emph{link } prefix, it is considered as an ordinary file and translated as a blob.
 
 \subsubsection{Executables}
-In Git repository, exectuable files are marked with a special file mode. Executable file in Subversion repository keeps svn:executable property. 
+In Git repository, executable files are marked with a special file mode. Executable file in Subversion repository keeps svn:executable property. 
 Thus, svn:executable property is translated into Git file mode and vice versa directly.
 
 \subsubsection{Ignores}
