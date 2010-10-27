@@ -23,7 +23,7 @@ Let's take a look at how these features are implemented. This chapter provides a
 In order to process Subversion user's requests sent over HTTP protocol, Translator is implemented as a Java servlet which might be ran inside any servlet container. All Subversion requests are served by the standard Subversion processing code which serves 
 these request by reading from or writing to the local Subversion repository (see FSFS at figure \ref{translator_components_pic}).
 \\\\
-Processing some of the write requests includes calls to \emph{hooks} which instantly translates Subversion revisions to Git commits.
+Processing some of the write requests includes calls to \emph{hooks} which instantly translates Subversion revisions to Git commits.% vs: Some misunderstanding may appear: hooks? those post-commit/pre-commit hooks or what?
 \\\\
 \textbf{Reused:} existing Subversion codebase; Subversion repository as a data storage.\\
 \textbf{Interference with GitHub infrastructure:} none. 
@@ -40,7 +40,8 @@ Synchronization takes place:
 \item Before Subversion repository becomes available to the users, to import existing Git commits into Subversion repository
 \item Just before Subversion commit is translated into Git commit to make sure Subversion repository is up to date
 \item On schedule, to minimize delays on commit
-\end{itemize} 
+\end{itemize}
+% vs: Actually full synchronization is absolutely necessary during commit operations only. But it's not critical to have Subversion repository up-to-date for every sing;e read-only request. So, even if Git users pushed a number of commits to Git repository, Subversion users may get these changes a bit later, not to make Servlet too slow.
 Import of Git commits into Subversion repository is performed with the help of SVNGitKit Java library.
 \\\\
 \textbf{Reused:} SVNGitKit library to import commits; Git code to clone and fetch from GitHub Git repository into the local one.\\
@@ -54,7 +55,7 @@ This approach helps to make sure that Subversion commit and corresponding Git pu
 For more detailed description of how Subversion commits are processed, refer to the section 1.2 of this specification.
 \\\\
 \textbf{Reused:} Instant translation uses SVNGitKit library, small part of the code is custom, in particular part which is responsible for integrity of Subversion commit and Git push pair.\\
-\textbf{Interference with GitHub infrastructure:} similar to other GitHub clients, this component of Translator performs push of the new Git objects into GitHub Git repository.
+\textbf{Interference with GitHub infrastructure:} similar to other GitHub clients, this component of Translator performs push of the new Git objects into GitHub Git repository. % vs: Actually during the translation of Git commit into Subversion repository, we have to get username (account name at GitHub) by Person Ident from Git commit. And vice versa for "from svn revision to git commit" translation we have to get person ident by svn author.
 
 \subsubsection{GitHub Integration}
 
