@@ -45,7 +45,7 @@ Translator uses the following algorithm:
 
 \begin{enumerate}
 \compactlist
-\item For every file which has svn:eol-style or svn:mime-type property value type modified \footnotemark[1] and for newly created files, Translator looks for a corresponding line in one of .gitattributes files located in the parent directory or at the higher level of the directories hierarchy.\\
+\item For every file which has svn:eol-style or svn:mime-type property modified or added, Translator looks for a corresponding line in one of the .gitattributes files located in the parent directory or at the higher level of the directories hierarchy.\\
 	
 \item If attribute definitions are found, Translator either adjusts corresponding lines in .gitattributes file to reflect properties change, 
 or, in case single line adjustment would affect more than one file, adds an explicit attribure definition:\\\\
