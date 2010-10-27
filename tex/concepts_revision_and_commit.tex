@@ -8,7 +8,7 @@ concepts of the parent commit and that of previous revisions have different sema
 i.e. previous states of repository preceding this commit.
 \item Contents, which might be described explicitly or as a set of modifications applied to the previous contents state.
 \end{itemize}
-Following sections outlines general translation rules used to translated Subversion revision to Git commits and Git commit
+Following sections outlines general translation rules used to translate Subversion revision to Git commits and Git commit
 to Subversion revision. This chapter describes general translation rules for revisions and commits, while further chapters provides all the 
 necessary details for processing of the special cases.
 \subsubsection{Translating Subversion Revision to Git Commits}
@@ -16,7 +16,11 @@ Every Subversion revision is translated to one or more Git commits and,
 when required by the translation rules, to the creation or deletion of Git reference objects (Git branches and tags).
 \\\\
 Subversion revision translation is performed in multiple stages.
-First, paths affected by Subversion revision are grouped by the branch or tag these paths belong to. 
+First, paths affected by Subversion revision are grouped by the branch or tag these paths belong to. The
+reason for this grouping is that with Subversion, a user can made modifications on serveral branches or tags 
+in the same revision. This is not possible with Git. Hence, the translation may require more than one commit in the Git repository, 
+each commit modifing single branch.
+\\\\
 Consider the following modifications made in a single Subversion revision:
 \\\\
 M \textbf{/trunk}/file.txt\\

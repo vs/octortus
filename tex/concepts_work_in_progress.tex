@@ -37,7 +37,7 @@ for the linearization approach.
 
 Git Forks could be seen as a foundation of the GitHub as a social network. 
 First version of Translator translates Git Fork and pull request using Subversion concepts of copy and merge,
-but makes not attempt to represent Subversion operations as a Git Fork.\\\\
+but makes no attempt to represent Subversion operations as a Git Fork.\\\\
 Further versions of Translator might extend translation
 rules so that some specific copies and merges performed in Subversion repository are translated into Git Fork.
 
@@ -68,7 +68,7 @@ Subversion users will use the following URLs to access Subversion repository:\\
 \textbf{Repository Root}: http://svnhub.com/\emph{project}\\
 
 Last URL doesn't allow to identify Subversion repository as it is shared by the independent projects of the same 
-name created by different users. In order to resolve this ambiguousity it will be necessary to require user authorization
+name created by different users. In order to resolve this ambiguity it will be necessary to require user authorization
 on access to repository root URL. In general, repository root does not need to be access in the course of normal
 Subversion workflow, but certain versions of Subversion client does access it due to the bugs in implementation and this 
 should be taken into account by Translator.\\\\
@@ -86,7 +86,7 @@ important features:
 \item Changes made in the forked repository might be \emph{pulled back} into origin repository
 \end{itemize}
 
-These features make its natural to translate Git Fork into a copy \emph{within} Subversion repository. Single fork 
+These features make it natural to translate Git Fork into a copy \emph{within} Subversion repository. Single fork 
 operation is translated into a revision which copies Subversion repository top-level directories into another top-level directory. 
 Thus, fork performed by the \emph{user} will be translated into the following revision:\\
 
@@ -129,8 +129,8 @@ it still might be translated to the Git submodule definition which is however st
 This special format will be ignored by the standard Git client, but Git client which supports this special format of submodule defintion, 
 might process such Submodule in a special way, for instance, it may import referred part of the Subversion repository into the local Git repository.
 \\\\
-SmartGit (http://syntevo.com/) is and example of a Git client that does support translation of arbitrary svn:externals. Translation
-is performed with a help of SVNGitKit library.
+SmartGit v2 (not yet released at the time of writing) (http://syntevo.com/) is and example of a Git client that does support translation of arbitrary svn:externals. Translation
+is performed with the help of SVNGitKit library.
 
 \subsection{Concepts not covered by this Specification}
 This version of Translator specification does not cover translation of the following concepts:

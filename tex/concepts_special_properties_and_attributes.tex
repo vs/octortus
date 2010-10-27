@@ -17,9 +17,9 @@ Git has multiple ways to keep metadata, these ways are:
 This file allows to define special metadata attributes per file.
 \end{enumerate}
 
-Special files stored in Git repository, in particular .gitignore and .gitattributes are kept
-on content translation of Git commit to Subversion revision and thus contents of these files is not 
-accessible to Subversion users. It is not allowed to created new files and directories named
+Special files stored in Git repository, in particular .gitignore and .gitattributes are skipped
+on content translation of Git commit to Subversion revision and thus contents of these files are not 
+accessible to Subversion users. It is not allowed to create new files and directories named
 .gitignore or .gitattributes in the Subversion repository.
 \\\\
 Translation rules for the metadata properties and attributes are described in further sections.
@@ -147,9 +147,10 @@ file name patterns. Files in this very directory that match at least one of the 
 Git uses versioned .gitignore file to define file path patterns to be ignored. Files in the directory
 where .gitignores file is located as well as files in the child directories are matched against defined patterns.
 \\\\
-Patterns, that may be defined by .gitignore are more generic than those that might be defined by Subversion svn:ignore property.
-Thus, some of the Git ignore rules can not be translated into svn:ignore property value and part of ignore information might be lost 
-in translation.
+Git's .gitignore patterns are more powerful than svn:ignore, so certain patterns cannot be translated back to Subversion.
+%Patterns, that may be defined by .gitignore are more generic than those that might be defined by Subversion svn:ignore property.
+%Thus, some of the Git ignore rules can not be translated into svn:ignore property value and part of ignore information might be lost 
+%in translation.
 \\\\
 \textbf{Subversion to Git Translation}
 \\\\
@@ -169,7 +170,7 @@ If no matching pattern found, then Translator adds a line:\\\\
 if svn:ignore property was added or modified, and \\\\
 \emph{!/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\
 if svn:ignore property was removed from the directory.\\
-\item If no .gitignore file was found was found in the ancestor directories of the file, Translator creates a new .gitignore file in the root directory with the following contents:\\\\
+\item If no .gitignore file was found in the ancestor directories of the file, Translator creates a new .gitignore file in the root directory with the following contents:\\\\
 \emph{/$<$ignore-pattern$>$}\\
 \item 
 If more than one .gitignore file was found in the parent directories of the file, then the closest one is chosen. 

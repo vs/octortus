@@ -1,7 +1,7 @@
 \renewcommand{\figurename}{Diagram}
 \subsection{Merge Tracking}
 
-Both Subversion and Git tracks merges performed in repository. There are differences, however in 
+Both Subversion and Git tracks merges performed in repository. There are differences however in 
 the granularity of the information being kept by Git and Subversion.
 \\\\
 \textbf{Subversion}: information on merge sources might be set on any path (file or directory) and might include not only
@@ -91,7 +91,7 @@ diagrams).
 
 \subsubsection{Subversion Cherry-Pick Merges}
 
-Subversion tracks merges of the individual revisions, feature also known as cherry-pick merges. 
+Subversion tracks merges of the individual revisions, a feature also known as cherry-pick merges. 
 Git is able to perform cherry-pick merges but it has no means to track these merges as part of merge commit history. 
 Hence, changes of the svn:mergeinfo Subversion property that result from the cherry-pick merge (i.e. changes that add individual revisions to the svn:mergeinfo) are
 translated into the regular Git commit with a single parent commit (see diagram \ref{no_merge_commit_on_cherry_pick_svn_to_git}).
@@ -165,13 +165,13 @@ in its turn, refers to another merge commit.
 Subversion svn:mergeinfo property which have to be translated to a Git merge commit, might refer to the multiple branches,
 either directly enumerating all branches and revisions, or indirectly, by referring to the branch which has svn:mergeinfo property set on it referring to another branch.
 \\\\
-Above are examples of the \emph{complex merges}. On translating of such merges, Translator takes into account both
+Below are examples of the \emph{complex merges}. On translating of such merges, Translator takes into account both
 directly and indirectly referenced changes and performs translation accordingly to the composite set of the 
 changes referenced by the merge commits or by the svn:mergeinfo properties.
 \\\\
 Shown below are examples of the complex merge history translation.
 \\\\
-The first use case depicted at diagram \ref{nested_merge_full_mergeinfo_git_to_svn}. 
+The first use case is depicted at diagram \ref{nested_merge_full_mergeinfo_git_to_svn}. 
 Commit \emph{i} is the merge commit of branches branch3 and branch1. 
 But branch1 has a commit \emph{f} which is commit merged branch2 into branch1. 
 For that case at corresponding revision r9 we add svn:mergeinfo property to branch3 which includes the merge history of all commits being merged at commit \emph{i}.
@@ -190,7 +190,7 @@ The mirror of this use case is depicted at diagram \ref{nested_merge_full_mergei
 \label{nested_merge_full_mergeinfo_svn_to_git}%
 \end{center}
 
-Slightly modified scenario is depicted at diagram \ref{nested_merge_partly_mergeinfo_svn_to_git}. Subversion user didn't include /branches/branch2@r5 into merge history explicitly. But this change already included via revision /branches/branch1@r6, thus commit \emph{e} is included into merge history of revision r9 implicitly. As result Translator is able to create commit \emph{i} corresponding to revision r9 and set two parents to it.
+Slightly modified scenario is depicted at diagram \ref{nested_merge_partly_mergeinfo_svn_to_git}. Subversion user didn't include /branches/branch2@r5 into merge history explicitly. But this change is already included via revision /branches/branch1@r6, thus commit \emph{e} is included into merge history of revision r9 implicitly. As result Translator is able to create commit \emph{i} corresponding to revision r9 and set two parents to it.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/nested_merge_partly_mergeinfo_svn_to_git.pdf}%
@@ -214,7 +214,7 @@ The same holds in opposite direction: when Subversion user merged revisions corr
 \label{merge_sequence_svn_to_git}%
 \end{center}
 
-Merged revisions may include only part of the history of the certain branch. 
+Merged revisions may include only part of the history of a certain branch. 
 This case might be a result of Subversion cherry-pick merges.
 To translate this kind of merge, Translator merely creates regular Git commit with a single parent (see diagram \ref{no_merge_commit_cherry_pick_sequence_svn_to_git}). 
 
