@@ -72,9 +72,9 @@ case of branch created by copying.
 \label{branch_creation_from_mergeinfo_svn_to_git}%
 \end{center}
 
-3. Finally, branch might be created with empty history, i.e. with no reference to any of the existing 
+3. Finally, branch might be created with an empty history, i.e. with no reference to any of the existing 
 revisions. In this case, as shown on the diagram \ref{branch_creation_no_history_svn_to_git} no child-parent
-reference is created for the new Git commit \emph{c}. % vs: Initial revision of the whole repository is translated in the same manner.
+reference is created for the new Git commit \emph{c}. 
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_creation_no_history_svn_to_git.pdf}%
@@ -110,7 +110,7 @@ and thus result in multiple branch references being deleted in Git repository on
 
 \subsubsection{Replacement of Subversion Branch}
 
-Subversion user is able to replace once branch by another with the same name. % vs: "once" or "one"?
+Subversion user is able to replace one branch by another with the same name.
 Translation of that special case is performed as shown on diagram \ref{branch_replacement_svn_to_git}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_replacement_svn_to_git.pdf}%
@@ -121,7 +121,7 @@ Translation of that special case is performed as shown on diagram \ref{branch_re
 \subsection{Git Branches and Tags}
 
 To translate Git branches and tags into corresponding Subversion entities, Translator
-constantly tracks current set of the reference objects in the Git repository. Whenever % vs: reference objects are here again. Maybe references to commit objects? I don't what is better.
+constantly tracks current set of the reference objects (branches and tags) in the Git repository. Whenever 
 Translator discovers that there is new, modified or deleted reference objects in the Git 
 repository, it creates, modifies or deletes corresponding directory in the Subversion repository.
 \subsubsection{New Git Branch}
