@@ -57,9 +57,14 @@ Merge in Subversion is represented as a change of svn:mergeinfo property.
 \\\\
 Whenever such change of svn:mergeinfo is made on a branch directory and in 
 such a way that svn:mergeinfo includes continuous ranges of revisions
-made on one ore more branches (each range starting from the first revision of the branch), then that svn:mergeinfo modification is translated into a Git merge commit.
-% vs: That's not right. It doesn't hold for every scenario. Basically algorithm follows first parents of every commit until merge-base commit (common ancestor commit) or commit with no parent commits, if revision range corresponding to this path is included into mergeinfo, merge commit is created.
+made on one ore more branches (each range starting from the first revision of the branch), 
+then that svn:mergeinfo modification is translated into a Git merge commit.
 \\\\
+% vs: That's not right. 
+% It doesn't hold for every scenario. 
+% Basically algorithm follows first parents of every commit until merge-base commit (common ancestor commit) or 
+% commit with no parent commits, if revision range corresponding to this path is included into mergeinfo, 
+% merge commit is created.
 Just like with translation of the Git merge commit into Subversion revision, 
 translation in the opposite direction is performed in two steps:
 \begin{itemize}
@@ -87,8 +92,8 @@ diagrams).
 \subsubsection{Subversion Cherry-Pick Merges}
 
 Subversion tracks merges of the individual revisions, feature also known as cherry-pick merges. 
-Git has no means to express merge of the individual commits, hence changes of the svn:mergeinfo Subversion % vs: Git is able to perform cherry-pick, but Git doesn't able to track performed cherry-picks.
-property that result from the cherry-pick merge (i.e. changes that add individual revisions to the svn:mergeinfo) are
+Git is able to perform cherry-pick merges but it has no means to track these merges as part of merge commit history. 
+Hence, changes of the svn:mergeinfo Subversion property that result from the cherry-pick merge (i.e. changes that add individual revisions to the svn:mergeinfo) are
 translated into the regular Git commit with a single parent commit (see diagram \ref{no_merge_commit_on_cherry_pick_svn_to_git}).
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/no_merge_commit_on_cherry_pick_svn_to_git.pdf}%
@@ -97,7 +102,8 @@ translated into the regular Git commit with a single parent commit (see diagram 
 \end{center}
 
 Eventually, a sequence of cherry-pick merges may result in svn:mergeinfo property referring to the 
-continuous range of revisions on the merge source branch, starting from the first revision % vs: The same algorithm employed here: follow first parents until merge-base or no commits.
+continuous range of revisions on the merge source branch, starting from the first revision 
+% vs: The same algorithm employed here: follow first parents until merge-base or no commits.
 of that branch. This last modification of svn:mergeinfo is translated into Git merge commit, as 
 shown on the diagrams \ref{merge_commit_on_double_cherry_pick_svn_to_git} and \ref{merge_commit_on_double_cherry_pick_branch_no_parent_svn_to_git}.
 
@@ -127,8 +133,7 @@ of the \emph{shelf} branch.
 \end{itemize}
 Examples of \emph{shelf} translation are shown in the diagrams \ref{boat_merge_named_shelve_git_to_svn} and \ref{boat_merge_shelve_is_normal_branch_git_to_svn}.
 In these examples it is possible to determine name for the \emph{shelf} branch either because branch reference points directly to the 
-last \emph{shelf} commit (diagram \ref{boat_merge_named_shelve_git_to_svn}) or to the commit originating from the \emph{shelf} (diagram \ref{boat_merge_shelve_is_normal_branch_git_to_svn}).
-% vs: the point here is that shelf commits are referenced by first parent commit from the commit referenced by branch.
+last \emph{shelf} commit (diagram \ref{boat_merge_named_shelve_git_to_svn}) or to the commit which originates from the \emph{shelf} (diagram \ref{boat_merge_shelve_is_normal_branch_git_to_svn}).
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/boat_merge_named_shelve_git_to_svn.pdf}%
 \captionof{figure}{Merge of Git branch which is available from another branch being translated to a sequence of Subversion revisions.}
@@ -141,7 +146,7 @@ last \emph{shelf} commit (diagram \ref{boat_merge_named_shelve_git_to_svn}) or t
 \end{center}
 
 In certain cases, it is not possible to determine name for the \emph{shelf} branch, as there is no branch reference pointing to
-the \emph{shelved} commits. In such case Translator creates temporary branch named after last shelf commit author and % vs: I would choose author of first shelf commit! He created the branch. Last shelf commit may also change when new commits will be appended to the shelve, but first commit on the shelf stays the same. That means that shelve branch may be merged a few times, but it name should stay the same.
+the \emph{shelved} commits. In such case Translator creates temporary branch named after the first shelf commit author and 
 deletes this temporary branch in the revision which corresponds to the merge commit (see diagram \ref{boat_merge_git_to_svn}). 
 \\\\
 To reduce clutter, anonymous temporary branch is created in the /shelves/ top-level Subversion directory, not in the /branches/ one where named branches reside. % and removed as soon as shelf is merged into the certain branch.
@@ -209,7 +214,9 @@ The same holds in opposite direction: when Subversion user merged revisions corr
 \label{merge_sequence_svn_to_git}%
 \end{center}
 
-Merged revisions may not include the whole history of certain branch. It is common case when Subversion user performed cherry-pick. As shown before Translator creates common commit for this case with single parent. This scenario is depicted at diagram \ref{no_merge_commit_cherry_pick_sequence_svn_to_git}. % vs: "Common commit", may be call it "Ordinary commit"?
+Merged revisions may include only part of the history of the certain branch. 
+This case might be a result of Subversion cherry-pick merges.
+To translate this kind of merge, Translator merely creates regular Git commit with a single parent (see diagram \ref{no_merge_commit_cherry_pick_sequence_svn_to_git}). 
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/no_merge_commit_cherry_pick_sequence_svn_to_git.pdf}%
