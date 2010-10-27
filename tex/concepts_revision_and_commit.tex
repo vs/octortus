@@ -3,7 +3,9 @@
 \renewcommand{\figurename}{Diagram}
 Every Subversion revision and every Git commit consists of:
 \begin{itemize}
-\item Metadata, which includes author, message, date and reference to the previous revision or to the parent commit.
+\item Metadata, which includes author, message, date and reference to the previous revision or to the parent commit. % vs: Subversion revision rN understands that previous
+% change was performed at revision rN-1, but rN-1 may change different branch(es) but not necessarily the same branch as that one modified by rN. Git commit may have parent
+% commit(s), therse commits are the history of the same branch.
 \item Contents, which might be described explicitly or as a set of modifications applied to the previous contents state.
 \end{itemize}
 Following sections outlines general translation rules used to translated Subversion revision to Git commits and Git commit
@@ -33,7 +35,7 @@ D file3.txt
   copied from \textbf{/trunk} at r3
 \end{enumerate}
 Then, each group of modifications is translated either to the Git commit or to
-the Git reference object deletion or creation.
+the Git reference object deletion or creation. % vs: tag is a Git reference object, but branch is not reference object, it's just a reference. Assuming we speak about objects in Git storage terms.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/single_change_svn_to_git.pdf}%
 \captionof{figure}{Subversion revision being translated to Git commit.}
@@ -43,16 +45,17 @@ To translate regular modification of multiple paths within specific branch (/bra
 Translator goes through the following steps: 
 \begin{enumerate}
 	\compactlist
-	\item Creates commit \emph{c} with Tree Object corresponding to /branches/branch1@r3 subdirectory content.
-	\item Commit \emph{c} has Author Ident and Committer Ident set to the author of the revision 3.
-	\item Commit \emph{c} has the date set to that of the revision 3.
-	\item Commit \emph{c} has the message set to that of the revision 3.
-	\item Commit \emph{c} has Parent Commit set to commit \emph{b} which corresponds to revision 2, i.e. previous modification of branch1.
+	\item Creates commit \emph{c} with tree object corresponding to /branches/branch1@r3 subdirectory content.
+	% here I removed Capital Letters to make whole specification look consistent: somewhere further we don't use Capital Letters for the same terms.
+	\item Commit \emph{c} has author ident and committer ident set to the author of the revision r3.
+	\item Commit \emph{c} has the date set to that of the revision r3.
+	\item Commit \emph{c} has the message set to that of the revision r3.
+	\item Commit \emph{c} has parent commit set to commit \emph{b} which corresponds to revision r2, i.e. previous modification of branch1.
 	\item And finally Translator updates reference /refs/heads/branch2 to the created commit \emph{c}.
 \end{enumerate}
 
 Some modifications, in particular those affecting branches and tags directories in Subversion repository, may
-result in the reference objects being created, deleted or modified in Git repository. Refer to the section \ref{section_branches_and_tags} for the corresponding translation rules.
+result in the reference objects being created, deleted or modified in Git repository. Refer to the section \ref{section_branches_and_tags} for the corresponding translation rules. % vs: reference objects are here again.
 
 \subsubsection{Translating Git Commit to Subversion Revision}
 Every Git commit is translated to a single Subversion revision. Subversion revision might also be an outcome of 
@@ -69,10 +72,10 @@ To translate regular Git commit (\emph{c}) on a particular branch (\emph{branch1
 the following:
 \begin{enumerate}
 	\compactlist
-	\item Creates \emph{revision 3} in which /branches/branch1 directory content corresponds to Tree Object of the Git \emph{c} commit.
-	\item Revision 3 has the author set to the author ident of the Git commit \emph{c}.
-	\item If the latest revision of Subversion repository before translation had date before Git commit \emph{c} creation date, this creation date is used for revision 3, otherwise the date of committing revision 3 is used.
-	\item Revision 3 has commit message set to the message of the Git commit \emph{c}.
+	\item Creates \emph{revision r3} in which /branches/branch1 directory content corresponds to tree object of the Git \emph{c} commit. % vs: to THE tree object?
+	\item Revision r3 has the author set to the author ident of the Git commit \emph{c}.
+	\item If the latest revision of Subversion repository before translation had date before Git commit \emph{c} creation date, this creation date is used for revision r3, otherwise the date of committing revision r3 is used.
+	\item Revision r3 has commit message set to the message of the Git commit \emph{c}.
 \end{enumerate}
 
 Some of the translation scenarios includes setting of additional properties on files and directories 
