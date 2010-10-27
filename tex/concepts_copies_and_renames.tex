@@ -6,6 +6,8 @@ branches (/branches/\emph{B}) and tags (/tags/\emph{T}). For that sort of copies
 No special translation is performed for a file or directory copied or renamed in Subversion revision. Copy of the single file is translated 
 to creation of a new file in the corresponding Git commit. Copy of a directory is translated to creation of a new directory with all its children
 in the corresponding Git commit.
+\\\\ 
+Metadata properties set on a copied files are translated as well, accordingly to the rules described in the chapter \ref{section_properties_and_attributes}.
 
 \subsubsection{Copies in Git to Subversion}
 Git provides means to detect rename of a file in a Git commit, but does not support copy detection, which could be 

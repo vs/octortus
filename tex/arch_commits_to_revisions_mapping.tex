@@ -19,7 +19,7 @@ in Subversion repository. Some of the non-commit changes, like Git branch or tag
 Mapping between Git commit objects and corresponding revisions in Subversion repository (pair of revision number and branch name) is 
 kept in Git repository, in a way similar to the one used to store Git notes. 
 \\\\
-Translator creates a special reference named /refs/mapping/svn and creates files in this branch named with Git commit object Id --- this is the first part of the mapping. 
+Translator creates a special reference named /refs/mapping/svn and creates files in this branch named with Git commit object identifier --- this is the first part of the mapping. 
 Contents of the file is Subversion revision number and branch name --- second part of the mapping.
 \\\\ 
 By merging contents /.git/refs/mapping/svn branch to /.git/refs/notes we will get user friendly output of the mapping as part of the standard git log.

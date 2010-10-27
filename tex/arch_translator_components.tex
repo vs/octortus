@@ -8,7 +8,7 @@ Translator runs as a separate component independent on existing GitHub infrastru
   \item Translating new Subversion revisions to Git commits
   \item Pushing translated Git commits to GitHub Git repository
 \end{itemize}
-Translator components are depicted on the diagram \ref{translator_components_pic}:
+Translator components are shown on the figure \ref{translator_components_pic} below:
 \begin{center}
 \includegraphics[width=\textwidth]{img/servlet/components_keep_github_safe.pdf}%
 \captionof{figure}{Translator Components.}
@@ -20,12 +20,11 @@ Let's take a look at how these features are implemented. This chapter provides a
 
 \label{srp}
 \subsubsection{Subversion Requests Processor}
-In order to process Subversion user's requests sent over HTTP protocol, Translator is implemented as a Java servlet which might be ran inside any servlet container. All Subversion requests are served by the standard Subversion processing code which serves 
+In order to process Subversion user's requests sent over HTTP (WebDAV) protocol, Translator is implemented as a Java servlet which might be ran inside any servlet container. All Subversion requests are served by the standard Subversion processing code which serves 
 these request by reading from or writing to the local Subversion repository (see FSFS at figure \ref{translator_components_pic}).
 \\\\
 Processing some of the write requests includes calls to \emph{hooks} which instantly translates Subversion revisions to Git commits.
-These \emph{hooks} should not be mixed up with the standard Subversion post- and pre- commit hooks. 
-Here the hooks injected into Subversion code by Translator are meant.\\\\
+These \emph{hooks} should not be mixed up with the standard Subversion post- and pre- commit hooks.\\\\
 While Subversion commit algorithm remains unmodified, it makes calls to the Translator code at certain strategic points, 
 and to these calls we refer as to \emph{hooks} here.
 \\\\
