@@ -44,14 +44,15 @@ Translator uses the following algorithm:
 
 \begin{enumerate}
 \compactlist
-\item For every file which has svn:eol-style or svn:mime-type property modified, Translator looks for a corresponding line in one of .gitattributes files located in the parent directory or 
-at the higher level of the directories hierarchy.\\
+\item For every file which has svn:eol-style or svn:mime-type property value type modified \footnotemark[1] and for newly created files, Translator looks for a corresponding line in one of .gitattributes files located in the parent directory or at the higher level of the directories hierarchy.\\
 	
-\item If attribute line is found, Translator adjusts corresponding attribute to reflect performed change. Basically Translator adds a line with pattern corresponding to the path of modified file and a new attribute:\\\\
+\item If attribute definitions are found, Translator either adjusts corresponding lines in .gitattributes file to reflect properties change, 
+or, in case single line adjustment would affect more than one file, adds an explicit attribure definition:\\\\
+% new attribute line considering attributes setting priorities. Translator tries to modify it to set appropriate property value, or even to delete the whole line. If this is impossible (for example, if the pattern in the line is a pattern), Translator adds a line with pattern corresponding to the path of modified file and a new attribute:\\\\
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
 	
-\item If no .gitattributes file was found in the ancestor directories of the file, Translator creates new .gitattributes file in the parent directory of the file with the following contents:\\\\
+\item If no .gitattributes file was found in the ancestor directories of the file, Translator creates new .gitattributes file in the root directory with the following contents:\\\\
 \emph{/$<$file-name$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
 	
@@ -61,30 +62,29 @@ Translator appends the following line to the selected .gitattributes file:\\\\
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
 \end{enumerate}
 
-\emph{Note}: comments stored in .gitattributes file left unmodified by Translator.\\
+\emph{Note}: comments and other attributes stored in .gitattributes file are left unmodified by Translator.\\
 \emph{Note}: Git user must set \emph{core.eol} configuration parameter to allow correct handling of the \emph{native} value of svn:eol-style property.
 
 \begin{center}
 \begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
 	\hline
 	svn:eol-style &   svn:mime-type &   text  & eol \\ \hline \hline
-	-             &   text/-        &   unset & undef \footnotemark[1] \footnotemark[2] \\ \hline
-	-             &   binary        &   unset & undef \\ \hline
+	-             &   text\footnotemark[1]/-        &   unset & undef \\ \hline
+	-             &   binary\footnotemark[1]        &   unset & undef \\ \hline
 	lf            &   text/-        &   set   & lf \\ \hline
 	lf            &   binary        &   unset & undef \\ \hline
-	cr            &   text/-        &   unset & undef  \footnotemark[3] \\ \hline
+	cr            &   text/-        &   unset & undef  \footnotemark[2] \\ \hline
 	cr            &   binary        &   unset & undef \\ \hline
 	crlf          &   text/-        &   set   & crlf \\ \hline
 	crlf          &   binary        &   unset & undef \\ \hline
-	native        &   text/-        &   set   & undef \footnotemark[4] \\ \hline
+	native        &   text/-        &   set   & undef \footnotemark[3] \\ \hline
 	native        &   binary        &   unset & undef \\ \hline
 \end{tabular}
 \captionof{table}{Subversion to Git EOL and MIME translation.}
 \label{eol_mime_svn_to_git}
-\footnotetext[1]{\emph{undef}, in general, needs only to be set, if there is another rule which matches the file, otherwise we may skip these attributes at all.}
-\footnotetext[2]{Missing Subversion properties mean text, leave EOLs as is for that case.}
-\footnotetext[3]{Subversion recognizes CR EOL-style, Git does not.}
-\footnotetext[4]{svn:eol-style property value \emph{native} should stay the same, Git user may configure \emph{native} via \emph{core.eol} configuration property.} 
+\footnotetext[1]{Here \emph{text} means property values that start with \emph{text/}, \emph{binary} --- all other values.}
+\footnotetext[2]{Subversion recognizes CR EOL-style, Git does not.}
+\footnotetext[3]{svn:eol-style property value \emph{native} should stay the same, Git user may configure \emph{native} via \emph{core.eol} configuration property.} 
 \end{center}
 \newpage
 \textbf{Git to Subversion Translation}\\
@@ -93,28 +93,30 @@ When .gitattributes file is modified in Git commit, Translator uses the followin
 
 \begin{enumerate}
 \compactlist
-\item For every file affected by the change new svn:eol-style and svn:mime-type properties are computed accordingly to the rules defined in the table \ref{eol_mime_git_to_svn}.
+\item For every file affected by the change new svn:eol-style and svn:mime-type properties types (\emph{text} or \emph{binary}) are computed accordingly to the rules defined in the table \ref{eol_mime_git_to_svn}.
 \item When there are no changes detected, Translator performs no further actions.
-\item When new and old properties values differ only in those values which were computed from \emph{undef} attribute value, Translator performs no further actions.
-\item Otherwise Translator sets new properties to affected files.
+\item When new and old properties value types don't differ, Translator performs no further actions.
+\item Otherwise Translator sets new properties to affected files according to the table \ref{eol_mime_git_to_svn}.
 \end{enumerate}
 
+\emph{Note}: Changing of recursive or pattern-like attributes settings forces changing property values of all matching files.
+
 \begin{center}
-\begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
+\begin{tabular}{| p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
 	\hline
 	text  & eol      &  svn:eol-style  &  svn:mime-type \\ \hline \hline
 	unset & undef    &  -              &  -/binary \footnotemark[1] \\ \hline
-	unset & unset    &  -              &  -/binary \footnotemark[2] \\ \hline
-	unset & set      &  native         &  - \footnotemark[3] \\ \hline
+	unset & unset    &  -              &  -/binary \\ \hline
+	unset & set      &  native         &  - \footnotemark[2] \\ \hline
 	unset & lf       &  lf             &  - \\ \hline
 	unset & crlf     &  crlf           &  - \\ \hline
 	set   & undef    &  native         &  - \\ \hline
-	set   & unset    &  native         &  - \footnotemark[4] \\ \hline
+	set   & unset    &  native         &  - \\ \hline
 	set   & set      &  native         &  - \\ \hline
 	set   & lf       &  lf             &  - \\ \hline
 	set   & crlf     &  crlf           &  - \\ \hline
-	auto  & undef    &  native/-       &  -/binary \footnotemark[1] \\ \hline
-	auto  & unset    &  native/-       &  -/binary \footnotemark[5] \\ \hline
+	auto  & undef    &  native/-       &  -/binary \\ \hline
+	auto  & unset    &  native/-       &  -/binary \\ \hline
 	auto  & set      &  native/-       &  -/binary \\ \hline
 	auto  & lf       &  lf/-           &  -/binary \\ \hline
 	auto  & crlf     &  crlf/-         &  -/binary \\ \hline
@@ -122,10 +124,7 @@ When .gitattributes file is modified in Git commit, Translator uses the followin
 \captionof{table}{Git to Subversion EOL and MIME translation.}
 \label{eol_mime_git_to_svn}
 \footnotetext[1]{Perform binary check.}
-\footnotetext[2]{unset/unset is redundant, treat it like unset/undef.}
-\footnotetext[3]{From Git documentation:\\eol - This attribute sets a specific line-ending style to be used in the working directory. It enables end-of-line normalization without any content checks, effectively setting the text attribute.}
-\footnotetext[4]{set/unset is contradiction, but text has precedence over eol, hence treat like set/undef.}
-\footnotetext[5]{auto/unset is contradiction, but text has precedence over eol, hence treat like auto/undef}
+\footnotetext[2]{From Git documentation:\\eol - This attribute sets a specific line-ending style to be used in the working directory. It enables end-of-line normalization without any content checks, effectively setting the text attribute.}
 \end{center}
 
 \subsubsection{Symbolic Links}
@@ -148,28 +147,36 @@ file name patterns. Files in this very directory that match at least one of the 
 Git uses versioned .gitignore file to define file path patterns to be ignored. Files in the directory
 where .gitignores file is located as well as files in the child directories are matched against defined patterns.
 \\\\
+Patterns, that may be defined by .gitignore are more generic than those that might be defined by Subversion svn:ignore property.
+Thus, some of the Git ignore rules can not be translated into svn:ignore property value and part of ignore information might be lost 
+in translation.
+\\\\
 \textbf{Subversion to Git Translation}
 \\\\
 Upon translation of the svn:ignore properties changes Translator tries to minimize amount of modifications
 made to .gitignore files. To translate svn:ignore properties changes, Translator uses the following algorithm:
-
+\\\\
+For every pattern defined in the modified svn:ignore property Translator does the following:
 \begin{enumerate}
 \compactlist
-\item For every directory with modified svn:ignore property Translator looks for a corresponding line in one of the 
-.gitignore files located in the parent directory or at the higher level of the directories hierarchy.\\
-\item If ignore pattern line is found, Translator adjusts corresponding ignore rule to reflect performed change. 
-Translator adds a line:\\\\
+%\item For every directory with modified svn:ignore property and for newly created directories Translator looks for a corresponding line in one of the 
+%.gitignore files located in the parent directory or at the higher level of the directories hierarchy. \\\\
+%\begin{enumerate}
+\item Looks for the corresponding .gitignore file and then for a pattern in that file that matches that in svn:ignore property.\\
+\item If matching ignore pattern line is found, Translator adjusts corresponding ignore pattern to reflect performed change.
+If no matching pattern found, then Translator adds a line:\\\\
 \emph{/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\
 if svn:ignore property was added or modified, and \\\\
 \emph{!/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\
 if svn:ignore property was removed from the directory.\\
-\item If no .gitignore file was found was found in the ancestor directories of the file, Translator creates a new .gitignore file in the file's directory with the following contents:\\\\
+\item If no .gitignore file was found was found in the ancestor directories of the file, Translator creates a new .gitignore file in the root directory with the following contents:\\\\
 \emph{/$<$ignore-pattern$>$}\\
 \item 
 If more than one .gitignore file was found in the parent directories of the file, then the closest one is chosen. 
 Translator appends the following line to the selected .gitignore file:\\\\
 \emph{/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\
 \end{enumerate}
+%\end{itemize}
 \emph{Note}: comments stored in .gitignore file left unmodified by Translator.\\
 \\
 \textbf{Git to Subversion Translation}
@@ -181,6 +188,9 @@ When .gitignore file is modified in Git commit, Translator uses the following al
 \item For every directory affected by the change, new svn:ignore property is computed according to the ignore patterns of all .gitignore files located at the directory and its parent directories.\\
 \item When there is difference between newly computed and existing svn:ignore values detected, then Translator sets computed svn:ignore properties on affected directories.\\
 \end{enumerate}
+
+\emph{Note}: Changing of recursive .gitignore rules forces changing property values of all subdirectories.
+
 \subsubsection{Subversion Externals and Git Submodules}
 \label{section_externals_and_submodules}
 Git submodule is translated to the svn:external property with a fixed revision in case Git submodule refers to the Git repository
