@@ -42,13 +42,13 @@ with the differences outlined above being taken into account.
 \subsubsection{Subversion Branch Creation}
 
 For the purpose of this specification, Subversion branch is a subdirectory in the top-level /branches directory of
-Subversion repository. Name of that very subdirectory is a branch name. /trunk top-level directory is considered to be a branch named "master".
+Subversion repository. Name of that very subdirectory is a branch name. /trunk top-level directory is considered to be a branch named \emph{master}.
 /trunk branch always exists in Subversion repository. Other branches might be created in different ways and thus there are 
 multiple ways to translate branch creation.
 \\\\
 1. Most common way to create a Subversion branch is to make a copy of another branch at particular revision.
 Diagram \ref{branch_creation_svn_to_git} depicts translation of a new Subversion branch \emph{/branhces/branch2} created 
-at revision 3 into creation of a Git commit \emph{c} and creation of a Git branch reference \emph{branch2}. Relationship 
+at revision r3 into creation of a Git commit \emph{c} and creation of a Git branch reference \emph{branch2}. Relationship 
 between \emph{/branches/branch2} and \emph{/branches/branch1} is translated into a child-parent reference between new commit \emph{c} and commit \emph{b}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_creation_svn_to_git.pdf}%
@@ -74,7 +74,7 @@ case of branch created by copying.
 
 3. Finally, branch might be created with empty history, i.e. with no reference to any of the existing 
 revisions. In this case, as shown on the diagram \ref{branch_creation_no_history_svn_to_git} no child-parent
-reference is created for the new Git commit \emph{c}. 
+reference is created for the new Git commit \emph{c}. % vs: Initial revision of the whole repository is translated in the same manner.
 
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_creation_no_history_svn_to_git.pdf}%
@@ -110,7 +110,7 @@ and thus result in multiple branch references being deleted in Git repository on
 
 \subsubsection{Replacement of Subversion Branch}
 
-Subversion user is able to replace once branch by another with the same name. 
+Subversion user is able to replace once branch by another with the same name. % vs: "once" or "one"?
 Translation of that special case is performed as shown on diagram \ref{branch_replacement_svn_to_git}.
 \begin{center}
 \includegraphics[width=\textwidth]{img/diagrams/branch_replacement_svn_to_git.pdf}%
@@ -121,7 +121,7 @@ Translation of that special case is performed as shown on diagram \ref{branch_re
 \subsection{Git Branches and Tags}
 
 To translate Git branches and tags into corresponding Subversion entities, Translator
-constantly tracks current set of the reference objects in the Git repository. Whenever
+constantly tracks current set of the reference objects in the Git repository. Whenever % vs: reference objects are here again. Maybe references to commit objects? I don't what is better.
 Translator discovers that there is new, modified or deleted reference objects in the Git 
 repository, it creates, modifies or deletes corresponding directory in the Subversion repository.
 \subsubsection{New Git Branch}
@@ -165,7 +165,7 @@ first branch.
 
 \subsubsection{Git Branch Deletion}
 
-Deletion of the Git branch reference result in the deletion of the corresponding branches in Subversion repository, 
+Deletion of the Git branch reference results in the deletion of the corresponding branches in Subversion repository, 
 (diagram \ref{branch_deletion_git_to_svn}). Multiple Git branches could be removed at once and as a result Translator 
 creates a single revision which removes every corresponding Subversion branch.
 \begin{center}
