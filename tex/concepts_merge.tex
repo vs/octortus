@@ -40,7 +40,7 @@ Example of such translation is shown in the diagram \ref{simple_merge_git_to_svn
 
 Revision \emph{6} is created as a result of commit \emph{f} translation. Then svn:mergeinfo property is updated on /branches/branch1 directory
 (red arrow) to reflect merge of commits \emph{d} and \emph{e} made on /branches/branch2 into /branches/branch1. In this 
-particular example svn:mergeinfo on /branchces/branch1 will be set to "/branches/branch2:4-5" value.
+particular example svn:mergeinfo on /branches/branch1 will be set to "/branches/branch2:4-5" value.
 \\\\
 Only commits made on the source (ancestor) branches are included into Subversion svn:mergeinfo, references to the commits on the same branch
 are excluded. For instance, in the example above, svn:mergeinfo will not contain "/branches/branch1:1-2". Thus, translation of the merge commit with no common history will result in the same svn:mergeinfo being set in Subversion repository (see diagram \ref{simple_merge_branch_no_parent_git_to_svn})
