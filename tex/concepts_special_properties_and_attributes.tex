@@ -59,8 +59,6 @@ where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated accordi
 Translator appends the following line to the selected .gitattributes file:\\\\
 \emph{/$<$relative-file-path$>$ $<$text-related-value$>$ $<$eol-related-value$>$},\\\\
 where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated according to the rules defined in the table \ref{eol_mime_svn_to_git}.\\
-\item Finally, for each created or modified .gitattributes file, Translator compacts added rules transforming 
-explicit path patterns to the recursive path patterns where possible.
 \end{enumerate}
 
 \emph{Note}: comments stored in .gitattributes file left unmodified by Translator.\\
@@ -171,8 +169,6 @@ if svn:ignore property was removed from the directory.\\
 If more than one .gitignore file was found in the parent directories of the file, then the closest one is chosen. 
 Translator appends the following line to the selected .gitignore file:\\\\
 \emph{/$<$relative-file-path$>$/$<$ignore-pattern$>$}\\
-\item Finally, for each created or modified .gitignore file, Translator compacts added rules transforming 
-explicit path patterns to the recursive path patterns when possible.
 \end{enumerate}
 \emph{Note}: comments stored in .gitignore file left unmodified by Translator.\\
 \\
