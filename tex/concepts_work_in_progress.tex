@@ -128,6 +128,9 @@ it still might be translated to the Git submodule definition which is however st
 \\\\
 This special format will be ignored by the standard Git client, but Git client which supports this special format of submodule defintion, 
 might process such Submodule in a special way, for instance, it may import referred part of the Subversion repository into the local Git repository.
+\\\\
+SmartGit (http://syntevo.com/) is and example of a Git client that does support translation of arbitrary svn:externals. Translation
+is performed with a help of SVNGitKit library.
 
 \subsection{Concepts not covered by this Specification}
 This version of Translator specification does not cover translation of the following concepts:
@@ -137,7 +140,13 @@ This version of Translator specification does not cover translation of the follo
 \item Subversion revision properties and Git notes
 \item Subversion svn:external property which uses HEAD revision
 \item Subversion path based authentication
-\item Subversion svn:author to Git author ident mapping
 \end{itemize}
 
 First version of Translator ignores above mentioned entities on translation and will do no attempt to translate them.
+\\\\
+Translation of the following concepts is not covered in this specification, but might need special
+rules to be defined in the future version of this specification:
+\begin{itemize}
+\item Subversion svn:author to Git author ident mapping - currently this values are considered to be identical and no
+mapping is used.
+\end{itemize}

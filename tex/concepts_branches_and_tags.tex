@@ -181,3 +181,17 @@ Git user may reset any branch to any commit, and that kind of modification is tr
 \captionof{figure}{Replacement of Git branch being translated to replacement of Subversion branch.}
 \label{branch_replacement_git_to_svn}%
 \end{center}
+
+\subsubsection{Unaccessible Git Commits}
+Deletion or replacement of a branch might result in a Git commit becoming unaccessible and subject to the 
+garbage collection. Translator should however, keep such commits around because further Subversion revisions 
+may refer to these "unaccessible" commits, for instance when Subversion revision ressurrects previously
+deleted branch.
+\\\\
+To address this problem Translator creates references to unaccessible Git commits, 
+whenever such unaccessible commit is detected. 
+These special references uses dedicated namespace /refs/attic and in general has a form of /refs/attic/branchName@revisionNumber.
+\\\\
+For instance, on diagram \ref{branch_deletion_git_to_svn} (Git branch reference is deleted), Git commit \emph{b} is references with /refs/attic/branch1@2 reference and on
+diagram \ref{branch_replacement_git_to_svn} (Git branch reference is replaced) Git commit \emph{c} is referenced with /refs/attic/branch2@3 reference
+after translation is completed.
