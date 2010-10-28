@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="specification" default="build" basedir=".">
+  <property name="artifact" value="draft"/>
+
+  <target name="init">
+    <mkdir dir="build"/>
+	
+	<copy todir="build">
+		<fileset dir=".">
+	      <include name="*.tex" />
+	    </fileset>
+    </copy>
+
+	<copy todir="build/img">
+        <fileset dir="img">
+            <include name="**" />
+        </fileset>
+    </copy>
+
+	<copy todir="build/tex">
+        <fileset dir="tex">
+            <include name="*.tex" />
+        </fileset>
+    </copy>
+  </target>
+
+  <target name="build">
+    <antcall target="clean" />
+    <antcall target="cleanoutput" />
+    <antcall target="init" />
+    <antcall target="compile" />
+    <antcall target="clean" />
+  </target>
+
+  <target name="pdflatex">
+    <exec executable="pdflatex" dir="build">
+      <arg line="-interaction=nonstopmode --file-line-error-style ${artifact}.tex" />
+    </exec>
+  </target>
+
+  <target name="compile">
+    <antcall target="pdflatex" />
+    <antcall target="pdflatex" />
+  </target>
+
+  <target name="clean">
+    <delete>
+      <fileset dir="build">
+        <include name="${artifact}.aux" />
+        <include name="${artifact}.lof" />
+        <include name="${artifact}.lot" />
+        <include name="${artifact}.out" />
+        <include name="${artifact}.toc" />
+        <include name="${artifact}.bbl" />
+        <include name="${artifact}.blg" />
+        <include name="${artifact}.brf" />
+        <include name="${artifact}.idx" />
+        <include name="${artifact}.glo" />
+        <include name="${artifact}.ist" />
+        <include name="${artifact}.glg" />
+        <include name="${artifact}.gls" />
+        <include name="texput.log" />
+	  </fileset>
+    </delete>
+  </target>
+
+  <target name="cleanoutput">
+    <delete>
+      <fileset dir="build">
+	    <include name="${artifact}.pdf" />
+        <include name="${artifact}.log" />
+	  </fileset>
+    </delete>
+  </target>
+</project>
