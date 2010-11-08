@@ -64,8 +64,9 @@ where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated accordi
 \end{enumerate}
 
 \emph{Note}: comments and other attributes stored in .gitattributes file are left unmodified by Translator.\\
+\\
 \emph{Note}: Git user must set \emph{core.eol} configuration parameter to allow correct handling of the \emph{native} value of svn:eol-style property.
-
+\clearpage
 \begin{center}
 \begin{tabular}{ | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} | p{0.20\textwidth} |}
 	\hline
@@ -87,7 +88,7 @@ where $<$text-related-value$>$ and $<$eol-related-value$>$ are generated accordi
 \footnotetext[2]{Subversion recognizes CR EOL-style, Git does not.}
 \footnotetext[3]{svn:eol-style property value \emph{native} should stay the same, Git user may configure \emph{native} via \emph{core.eol} configuration property.} 
 \end{center}
-\newpage
+
 \textbf{Git to Subversion Translation}\\
 
 When .gitattributes file is modified in Git commit, Translator uses the following algorithm steps to apply changes to the metadata of corresponding files in Subversion repository:
@@ -127,7 +128,6 @@ When .gitattributes file is modified in Git commit, Translator uses the followin
 \footnotetext[1]{Perform binary check.}
 \footnotetext[2]{From Git documentation:\\eol - This attribute sets a specific line-ending style to be used in the working directory. It enables end-of-line normalization without any content checks, effectively setting the text attribute.}
 \end{center}
-
 \subsubsection{Symbolic Links}
 Git stores symbolic link as an entry at Tree Object with a special file mode and corresponding blob containing \emph{path/to/target}.
 \\\\
