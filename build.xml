@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="specification" default="build" basedir=".">
-  <property name="artifact" value="draft"/>
+  <property name="artifact" value="merge"/>
 
   <target name="init">
     <mkdir dir="build"/>

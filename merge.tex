@@ -1,0 +1,68 @@
+\documentclass[aps,%
+12pt,%
+final,%
+oneside,
+onecolumn,%
+superscriptaddress,%
+centertags]{article} %%
+\topmargin=10em
+\textheight=600pt
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true,urlcolor=black,linkcolor=black,filecolor=black,citecolor=black,unicode,pdftex]{hyperref}
+%\usepackage{supertabular}
+\usepackage[pdftex]{graphicx}
+\usepackage{caption}
+%\usepackage{amsthm,amssymb, amsmath}
+%\usepackage{textcomp}
+%\usepackage[noend]{algorithmic}
+%\usepackage[ruled]{algorithm}
+
+\selectlanguage{english}
+\setlength{\parindent}{0cm}
+\setcounter{secnumdepth}{3}
+
+\newcommand{\compactlist}{\setlength{\itemsep}{0pt} \setlength{\parskip}{0pt} \setlength{\leftskip}{-1em}}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+
+% Title
+\textbf{\LARGE Git –- Subversion Translation} \\[2.0cm]
+\textbf{\Large Extract of Specification Draft, version 2}\\[3.0cm]
+
+\textbf{Alexander Kitaev} \\[0.2cm]
+\textnormal{alexander.kitaev@tmatesoft.com} \\[1.0cm]
+
+\textbf{Dmitry Pavlenko} \\[0.2cm]
+\textnormal{dmitry.pavlenko@tmatesoft.com} \\[1.0cm]
+
+\textbf{Marc Strapetz} \\[0.2cm]
+\textnormal{marc.strapetz@syntevo.com} \\[1.0cm]
+
+\textbf{Semen Vadishev} \\[0.2cm]
+\textnormal{semen.vadishev@tmatesoft.com} \\[1.0cm]
+
+\end{center}
+\end{titlepage}
+
+\topmargin=-10pt
+\setcounter{page}{2}
+
+\newpage
+\hrule
+\tableofcontents
+
+\newpage
+\hrule
+\section{Introduction}
+\input{tex/intro}
+
+\newpage
+\hrule
+\section{Translated Concepts}
+\input{tex/concepts_merge_updated}
+
+\end{document}
